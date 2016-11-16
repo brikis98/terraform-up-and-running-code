@@ -19,7 +19,7 @@ begin
   puts `terraform apply #{vars_string} 2>&1`
 
   elb_dns_name = `terraform output -no-color elb_dns_name`
-  url = "http://#{elb_dns_name}/"
+  url = "http://#{elb_dns_name.strip}/"
 
   retries = 0
   loop do
