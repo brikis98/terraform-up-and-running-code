@@ -8,6 +8,8 @@ export server_port=8888
 
 output=$(curl "http://localhost:$server_port")
 
-if [[ $output != *"Hello, World"* ]]; then
-  echo "Did not get back expected text 'Hello, World'"
+if [[ $output == *"Hello, World"* ]]; then
+  echo "Success! Got expected text from server."
+else
+  echo "Error. Did not get back expected text 'Hello, World'."
 fi
