@@ -14,7 +14,7 @@ For more info, please see Chapter 2, "An Introduction to Terraform Syntax", of
 * You must have [Terraform](https://www.terraform.io/) installed on your computer. 
 * You must have an [Amazon Web Services (AWS) account](http://aws.amazon.com/).
 
-Please note that this code was written for Terraform {{ terraform_version }}.
+Please note that this code was written for Terraform 0.7.x.
 
 ## Quick start
 
