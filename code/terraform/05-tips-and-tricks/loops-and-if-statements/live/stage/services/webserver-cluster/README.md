@@ -4,11 +4,10 @@ This folder contains example [Terraform](https://www.terraform.io/) templates th
 (using [EC2](https://aws.amazon.com/ec2/) and [Auto Scaling](https://aws.amazon.com/autoscaling/)) and a load balancer
 (using [ELB](https://aws.amazon.com/elasticloadbalancing/)) in an [Amazon Web Services (AWS) 
 account](http://aws.amazon.com/). The load balancer listens on port 80 and returns the text "Hello, World" for the 
-`/` URL. The Auto Scaling Group is able to do a zero-downtime deployment when you update any of it's properties. The 
-code for the cluster and load balancer are defined as a Terraform module in
+`/` URL. The code for the cluster and load balancer are defined as a Terraform module in
 [modules/services/webserver-cluster](../../../../modules/services/webserver-cluster).
 
-For more info, please see Chapter 6, "How to use Terraform as a Team", of 
+For more info, please see Chapter 5, "Terraform Tips & Tricks: Loops, If-Statements, Deployment, and Gotchas", of 
 *[Terraform: Up and Running](http://www.terraformupandrunning.com)*.
 
 ## Pre-requisites

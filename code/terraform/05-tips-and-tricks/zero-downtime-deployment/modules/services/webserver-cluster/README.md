@@ -7,7 +7,7 @@ Scaling](https://aws.amazon.com/autoscaling/)) and a load balancer (using
 The load balancer listens on port 80 and returns the text "Hello, World" for the `/` URL. The Auto Scaling Group is 
 able to do a zero-downtime deployment when you update any of it's properties.
 
-For more info, please see Chapter 6, "How to use Terraform as a Team", of 
+For more info, please see Chapter 5, "Terraform Tips & Tricks: Loops, If-Statements, Deployment, and Gotchas", of 
 *[Terraform: Up and Running](http://www.terraformupandrunning.com)*.
 
 ## Quick start

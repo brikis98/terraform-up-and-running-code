@@ -40,7 +40,3 @@ variable "server_text" {
   description = "The text the web server should return"
   default     = "Hello, World"
 }
-
-variable "aws_region" {
-  description = "The AWS region to use"
-}
