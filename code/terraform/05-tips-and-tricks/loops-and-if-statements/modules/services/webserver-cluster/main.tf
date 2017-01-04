@@ -1,12 +1,15 @@
+terraform {
+  required_version = ">= 0.8, < 0.9"
+}
+
 resource "aws_launch_configuration" "example" {
   image_id        = "ami-40d28157"
   instance_type   = "${var.instance_type}"
   security_groups = ["${aws_security_group.instance.id}"]
 
-  user_data = "${element(
-      concat(data.template_file.user_data.*.rendered,
-             data.template_file.user_data_new.*.rendered),
-      0)}"
+  user_data = "${var.enable_new_user_data ?
+      data.template_file.user_data_new.0.rendered :
+      data.template_file.user_data.0.rendered}"
 
   lifecycle {
     create_before_destroy = true
@@ -166,8 +169,7 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu_utilization" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "low_cpu_credit_balance" {
-  count = "${replace(replace(var.instance_type, "/^[^t].*/", "0"),
-               "/^t.*$/", "1")}"
+  count = "${format("%.1s", var.instance_type) == "t" ? 1 : 0}"
 
   alarm_name  = "${var.cluster_name}-low-cpu-credit-balance"
   namespace   = "AWS/EC2"

@@ -12,7 +12,7 @@ For more info, please see Chapter 3, "How to Manage Terraform State", of
 * You must have [terragrunt](https://github.com/gruntwork-io/terragrunt) installed on your computer.
 * You must have an [Amazon Web Services (AWS) account](http://aws.amazon.com/).
 
-Please note that this code was written for Terraform 0.7.x.
+Please note that this code was written for Terraform 0.8.x.
 
 ## Quick start
 

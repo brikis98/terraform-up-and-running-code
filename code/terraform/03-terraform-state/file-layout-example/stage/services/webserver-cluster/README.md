@@ -17,7 +17,7 @@ For more info, please see Chapter 3, "How to Manage Terraform State", of
 * You must deploy the MySQL database in [data-stores/mysql](../../data-stores/mysql) BEFORE deploying the
   templates in this folder.
 
-Please note that this code was written for Terraform 0.7.x.
+Please note that this code was written for Terraform 0.8.x.
 
 ## Quick start
 

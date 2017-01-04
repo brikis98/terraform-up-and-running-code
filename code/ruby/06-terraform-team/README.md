@@ -2,7 +2,7 @@
 
 This folder shows an example of how to write automated tests for a web server cluster defined in 
 [Terraform](https://www.terraform.io/) templates. The folder contains a Ruby script, `terraform-test.rb`, that will 
-apply your Terraform templates and then test the web server cluster URL to make sure it returns "Hello, World". 
+apply your Terraform configurations and then test the web server cluster URL to make sure it returns "Hello, World". 
 
 For more info, please see Chapter 6, "How to use Terraform as a Team", of 
 *[Terraform: Up and Running](http://www.terraformupandrunning.com)*.
@@ -29,7 +29,7 @@ export AWS_SECRET_ACCESS_KEY=(your secret access key)
 ```
 
 Deploy a test database of some sort that the web server cluster can connect to. For example, you could deploy the
-Terraform templates under 
+Terraform configurations under 
 [code/terraform/06-terraform-team/live/stage/data-stores/mysql](/code/terraform/06-terraform-team/live/stage/data-stores/mysql).
 Make sure to note down the AWS region you're deploying into (e.g. `us-east-1`) as well as the S3 bucket name (e.g.
 `my-terraform-state`) and key (e.g. `qa/stage/data-stores/mysql/terraform.tfstate`) you use to store the remote state 

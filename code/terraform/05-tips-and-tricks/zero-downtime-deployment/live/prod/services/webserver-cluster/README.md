@@ -19,7 +19,7 @@ For more info, please see Chapter 5, "Terraform Tips & Tricks: Loops, If-Stateme
 * You must deploy the MySQL database in [data-stores/mysql](../../data-stores/mysql) BEFORE deploying the
   templates in this folder.
 
-Please note that this code was written for Terraform 0.7.x.
+Please note that this code was written for Terraform 0.8.x.
 
 ## Quick start
 

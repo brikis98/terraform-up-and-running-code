@@ -4,7 +4,7 @@ This folder contains an example [Terraform](https://www.terraform.io/) template 
 [EC2](https://aws.amazon.com/ec2/)) in an [Amazon Web Services (AWS) account](http://aws.amazon.com/). The web server
 listens on port 8080 and returns the text "Hello, World" for the `/` URL.
 
-For more info, please see Chapter 2, "An Introduction to Terraform Syntax", of 
+For more info, please see Chapter 2, "Getting started with Terraform", of 
 *[Terraform: Up and Running](http://www.terraformupandrunning.com)*.
 
 ## Pre-requisites
@@ -12,7 +12,7 @@ For more info, please see Chapter 2, "An Introduction to Terraform Syntax", of
 * You must have [Terraform](https://www.terraform.io/) installed on your computer. 
 * You must have an [Amazon Web Services (AWS) account](http://aws.amazon.com/).
 
-Please note that this code was written for Terraform 0.7.x.
+Please note that this code was written for Terraform 0.8.x.
 
 ## Quick start
 

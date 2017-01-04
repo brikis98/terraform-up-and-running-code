@@ -1,3 +1,7 @@
+terraform {
+  required_version = ">= 0.8, < 0.9"
+}
+
 provider "aws" {
   region = "us-east-1"
 }
@@ -9,10 +13,9 @@ module "webserver_cluster" {
   db_remote_state_bucket = "${var.db_remote_state_bucket}"
   db_remote_state_key    = "${var.db_remote_state_key}"
 
-  instance_type = "m4.large"
-  min_size      = 2
-  max_size      = 10
-
+  instance_type        = "m4.large"
+  min_size             = 2
+  max_size             = 10
   enable_autoscaling   = true
   enable_new_user_data = false
 }

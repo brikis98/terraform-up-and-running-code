@@ -1,11 +1,13 @@
+terraform {
+  required_version = ">= 0.8, < 0.9"
+}
+
 provider "aws" {
   region = "us-east-1"
 }
 
 module "webserver_cluster" {
-  source = "git@github.com:brikis98/terraform-up-and-running-code.git//
-    code/terraform/04-terraform-module/module-example/modules/
-    services/webserver-cluster?ref=v0.0.1"
+  source = "git@github.com:brikis98/terraform-up-and-running-code.git//code/terraform/04-terraform-module/module-example/modules/services/webserver-cluster?ref=v0.0.1"
 
   cluster_name           = "webservers-stage"
   db_remote_state_bucket = "${var.db_remote_state_bucket}"

@@ -14,7 +14,7 @@ For more info, please see Chapter 3, "How to Manage Terraform State", of
 * You may want to install [terragrunt](https://github.com/gruntwork-io/terragrunt) for locking and remote state 
   management.
 
-Please note that this code was written for Terraform 0.7.x.
+Please note that this code was written for Terraform 0.8.x.
 
 ## Quick start
 
