@@ -26,7 +26,8 @@ data "template_file" "user_data" {
 }
 
 resource "aws_autoscaling_group" "example" {
-  name                 = "${var.cluster_name}-${aws_launch_configuration.example.name}"
+  name = "${var.cluster_name}-${aws_launch_configuration.example.name}"
+
   launch_configuration = "${aws_launch_configuration.example.id}"
   availability_zones   = ["${data.aws_availability_zones.all.names}"]
   load_balancers       = ["${aws_elb.example.name}"]

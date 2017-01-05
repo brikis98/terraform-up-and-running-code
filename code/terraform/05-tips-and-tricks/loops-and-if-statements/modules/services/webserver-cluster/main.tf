@@ -7,9 +7,10 @@ resource "aws_launch_configuration" "example" {
   instance_type   = "${var.instance_type}"
   security_groups = ["${aws_security_group.instance.id}"]
 
-  user_data = "${var.enable_new_user_data ?
-      data.template_file.user_data_new.0.rendered :
-      data.template_file.user_data.0.rendered}"
+  user_data = "${element(
+      concat(data.template_file.user_data.*.rendered,
+             data.template_file.user_data_new.*.rendered),
+      0)}"
 
   lifecycle {
     create_before_destroy = true
