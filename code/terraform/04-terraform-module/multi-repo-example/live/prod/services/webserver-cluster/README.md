@@ -14,7 +14,6 @@ For more info, please see Chapter 4, "How to Create Reusable Infrastructure with
 ## Pre-requisites
 
 * You must have [Terraform](https://www.terraform.io/) installed on your computer. 
-* You must have [terragrunt](https://github.com/gruntwork-io/terragrunt) installed on your computer.
 * You must have an [Amazon Web Services (AWS) account](http://aws.amazon.com/).
 * You must deploy the MySQL database in [data-stores/mysql](../../data-stores/mysql) BEFORE deploying the
   templates in this folder.
@@ -36,12 +35,6 @@ export AWS_ACCESS_KEY_ID=(your access key id)
 export AWS_SECRET_ACCESS_KEY=(your secret access key)
 ```
 
-Fill in the name of an [S3](https://aws.amazon.com/s3/) bucket to use for remote state storage in `.terragrunt`:
- 
-```hcl
-bucket = "(YOUR_BUCKET_NAME)"
-``` 
-
 In `vars.tf`, fill in the name of the S3 bucket and key where the remote state is stored for the MySQL database
 (you must deploy the templates in [data-stores/mysql](../../data-stores/mysql) first):
 
@@ -58,17 +51,17 @@ variable "db_remote_state_key" {
 Validate the templates:
 
 ```
-terragrunt plan
+terraform plan
 ```
 
 Deploy the code:
 
 ```
-terragrunt apply
+terraform apply
 ```
 
 Clean up when you're done:
 
 ```
-terragrunt destroy
+terraform destroy
 ```

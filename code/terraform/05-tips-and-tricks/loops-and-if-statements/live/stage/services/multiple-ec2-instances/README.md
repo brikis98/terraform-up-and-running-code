@@ -10,7 +10,6 @@ For more info, please see Chapter 5, "Terraform Tips & Tricks: Loops, If-Stateme
 ## Pre-requisites
 
 * You must have [Terraform](https://www.terraform.io/) installed on your computer. 
-* You must have [terragrunt](https://github.com/gruntwork-io/terragrunt) installed on your computer.
 * You must have an [Amazon Web Services (AWS) account](http://aws.amazon.com/).
 
 Please note that this code was written for Terraform 0.8.x.
@@ -30,26 +29,20 @@ export AWS_ACCESS_KEY_ID=(your access key id)
 export AWS_SECRET_ACCESS_KEY=(your secret access key)
 ```
 
-Fill in the name of an [S3](https://aws.amazon.com/s3/) bucket to use for remote state storage in `.terragrunt`:
- 
-```hcl
-bucket = "(YOUR_BUCKET_NAME)"
-``` 
-
 Validate the templates:
 
 ```
-terragrunt plan
+terraform plan
 ```
 
 Deploy the code:
 
 ```
-terragrunt apply
+terraform apply
 ```
 
 Clean up when you're done:
 
 ```
-terragrunt destroy
+terraform destroy
 ```
