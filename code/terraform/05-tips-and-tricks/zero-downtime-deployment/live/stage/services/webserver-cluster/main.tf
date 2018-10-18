@@ -9,7 +9,7 @@ provider "aws" {
 module "webserver_cluster" {
   source = "../../../../modules/services/webserver-cluster"
 
-  ami         = "ami-40d28157"
+  ami         = "ami-0977029b5b13f3d08"
   server_text = "New server text"
 
   cluster_name           = "webservers-stage"
