@@ -18,7 +18,7 @@ For more info, please see Chapter 6, "How to use Terraform as a Team", of
 * You must deploy the MySQL database in [data-stores/mysql](../../data-stores/mysql) BEFORE deploying the
   templates in this folder.
 
-Please note that this code was written for Terraform 0.8.x.
+Please note that this code was written for Terraform 0.11.x.
 
 ## Quick start
 

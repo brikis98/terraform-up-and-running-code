@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.8, < 0.9"
+  required_version = ">= 0.11, < 0.12"
 }
 
 resource "aws_launch_configuration" "example" {
