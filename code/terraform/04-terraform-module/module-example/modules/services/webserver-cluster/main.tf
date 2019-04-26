@@ -1,5 +1,11 @@
 terraform {
   required_version = ">= 0.11, < 0.12"
+  backend "s3" {
+    bucket  = "terraform-up-and-running-state"
+    key     = "stage/services/webserver-cluster/terraform.tfstate"
+    encrypt = true
+    dynamodb_table = "terraform-state-lock-dynamo"
+  }
 }
 
 resource "aws_launch_configuration" "example" {
