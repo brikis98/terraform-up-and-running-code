@@ -1,8 +1,8 @@
 # Existing IAM user example
 
-This folder contains example [Terraform](https://www.terraform.io/) templates that create an 
+This folder contains example [Terraform](https://www.terraform.io/) configuration that create an 
 [IAM](https://aws.amazon.com/iam/) user in an [Amazon Web Services (AWS) account](http://aws.amazon.com/). The goal of
-these templates is to set the name of the IAM user to a name that already exists in your AWS account so you can 
+these configuration is to set the name of the IAM user to a name that already exists in your AWS account so you can 
 practice importing existing resources into Terraform state.
 
 For more info, please see Chapter 5, "Terraform Tips & Tricks: Loops, If-Statements, Deployment, and Gotchas", of 
@@ -13,7 +13,7 @@ For more info, please see Chapter 5, "Terraform Tips & Tricks: Loops, If-Stateme
 * You must have [Terraform](https://www.terraform.io/) installed on your computer. 
 * You must have an [Amazon Web Services (AWS) account](http://aws.amazon.com/).
 
-Please note that this code was written for Terraform 0.8.x.
+Please note that this code was written for Terraform 0.12.x.
 
 ## Quick start
 
@@ -34,32 +34,26 @@ In `main.tf`, fill in the name of an IAM user that already exists in your accoun
  
 ```hcl
 resource "aws_iam_user" "existing_user" {
-  name = "(EXISTING_IAM_USER_NAME)"
+  name = "<EXISTING_IAM_USER_NAME>"
 }
 ``` 
 
-Validate the templates:
+Validate the configuration:
 
 ```
-terraform plan
-```
-
-If you deploy the code, you will get an error, since the user already exists:
-
-```
+terraform init
 terraform apply
-(ERROR)
 ```
 
-Instead, use the `import` command:
+If you deploy the code, you will get an error, since the user already exists! To solve this issue, use the `import` 
+command:
 
 ```
 terraform import aws_iam_user.existing_user (EXISTING_IAM_USER_NAME)
 ```
 
-Now try `plan` and `apply` again:
+Now try `apply` again:
 
 ```
-terraform plan
 terraform apply
 ```

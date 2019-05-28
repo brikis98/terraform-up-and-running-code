@@ -1,6 +1,6 @@
 # Web server cluster example
 
-This folder contains example [Terraform](https://www.terraform.io/) templates that deploy a cluster of web servers 
+This folder contains an example [Terraform](https://www.terraform.io/) configuration that deploys a cluster of web servers 
 (using [EC2](https://aws.amazon.com/ec2/) and [Auto Scaling](https://aws.amazon.com/autoscaling/)) and a load balancer
 (using [ELB](https://aws.amazon.com/elasticloadbalancing/)) in an [Amazon Web Services (AWS) 
 account](http://aws.amazon.com/). The load balancer listens on port 80 and returns the text "Hello, World" for the 
@@ -14,9 +14,9 @@ For more info, please see Chapter 3, "How to Manage Terraform State", of
 * You must have [Terraform](https://www.terraform.io/) installed on your computer. 
 * You must have an [Amazon Web Services (AWS) account](http://aws.amazon.com/).
 * You must deploy the MySQL database in [data-stores/mysql](../../data-stores/mysql) BEFORE deploying the
-  templates in this folder.
+  configuration in this folder.
 
-Please note that this code was written for Terraform 0.8.x.
+Please note that this code was written for Terraform 0.12.x.
 
 ## Quick start
 
@@ -33,29 +33,34 @@ export AWS_ACCESS_KEY_ID=(your access key id)
 export AWS_SECRET_ACCESS_KEY=(your secret access key)
 ```
 
-In `vars.tf`, fill in the name of the S3 bucket and key where the remote state is stored for the MySQL database
-(you must deploy the templates in [data-stores/mysql](../../data-stores/mysql) first):
+In `variables.tf`, fill in the name of the S3 bucket and key where the remote state is stored for the MySQL database
+(you must deploy the configuration in [data-stores/mysql](../../data-stores/mysql) first):
 
 ```hcl
 variable "db_remote_state_bucket" {
   description = "The name of the S3 bucket used for the database's remote state storage"
+  type        = string
+  default     = "<YOUR BUCKET NAME>"
 }
 
 variable "db_remote_state_key" {
   description = "The name of the key in the S3 bucket used for the database's remote state storage"
+  type        = string
+  default     = "<YOUR STATE PATH>"
 }
-```
-
-Validate the templates:
-
-```
-terraform plan
 ```
 
 Deploy the code:
 
 ```
+terraform init
 terraform apply
+```
+
+When the `apply` command completes, it will output the DNS name of the load balancer. To test the load balancer:
+
+```
+curl http://<alb_dns_name>/
 ```
 
 Clean up when you're done:
