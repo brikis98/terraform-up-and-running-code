@@ -5,6 +5,10 @@ This repo contains the code samples for the book *[Terraform: Up and Running](ht
 
 
 
+## IMPORTANT NOTE ON 2ND EDITION
+
+The 2nd edition of *Terraform: Up & Running* will be available shortly! If you're reading an early copy of the new edition of the book, please head over to the [2nd-edition branch](https://github.com/brikis98/terraform-up-and-running-code/tree/2nd-edition), which has all the code updated to Terraform 0.12, tons of new code for the new chapters in the book, and so on. It's a work in progress, so think of this branch as a preview of what things will look like when all the updates are finished.
+
 
 ## Quick start
 
