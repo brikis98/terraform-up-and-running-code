@@ -33,7 +33,7 @@ class Handlers
   end
 
   def hello
-    [200, 'text/plain', 'Hello, World']
+    [200, 'text/plain', 'Hello, World v2']
   end
 
   def api
