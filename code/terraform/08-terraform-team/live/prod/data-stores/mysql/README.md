@@ -1,4 +1,4 @@
-# MySQL on RDS example (production environment)
+# MySQL on RDS example (prod environment)
 
 This folder contains an example [Terraform](https://www.terraform.io/) configuration that deploys a MySQL database  (using 
 [RDS](https://aws.amazon.com/rds/) in an [Amazon Web Services (AWS) account](http://aws.amazon.com/). 
