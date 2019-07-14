@@ -8,6 +8,12 @@ resource "aws_launch_configuration" "example" {
   security_groups = [aws_security_group.instance.id]
 
   user_data = data.template_file.user_data.rendered
+
+  # Required when using a launch configuration with an auto scaling group.
+  # https://www.terraform.io/docs/providers/aws/r/launch_configuration.html
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 data "template_file" "user_data" {
@@ -22,8 +28,8 @@ data "template_file" "user_data" {
 }
 
 resource "aws_autoscaling_group" "example" {
-  # Explicitly depend on the launch configuration's name so each time it's replaced,
-  # this ASG is also replaced
+  # Explicitly depend on the launch configuration's name so each time it's
+  # replaced, this ASG is also replaced
   name = "${var.cluster_name}-${aws_launch_configuration.example.name}"
 
   launch_configuration = aws_launch_configuration.example.name

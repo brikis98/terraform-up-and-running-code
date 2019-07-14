@@ -7,6 +7,12 @@ resource "aws_launch_configuration" "example" {
   instance_type   = var.instance_type
   security_groups = [aws_security_group.instance.id]
   user_data       = var.user_data
+
+  # Required when using a launch configuration with an auto scaling group.
+  # https://www.terraform.io/docs/providers/aws/r/launch_configuration.html
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_autoscaling_group" "example" {

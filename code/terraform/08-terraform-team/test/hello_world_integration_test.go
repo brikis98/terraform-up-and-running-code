@@ -11,253 +11,183 @@ import (
 	"time"
 )
 
-func TestHelloWorldAppStageWithStages(t *testing.T)  {
+// Replace these with the proper paths to your modules
+const dbDirProd = "../live/prod/data-stores/mysql"
+const appDirProd = "../live/prod/services/hello-world-app"
+const dbDirStage = "../live/stage/data-stores/mysql"
+const appDirStage = "../live/stage/services/hello-world-app"
+
+func TestHelloWorldAppStageWithStages(t *testing.T) {
 	t.Parallel()
 
-	dbModuleDir := "../live/stage/data-stores/mysql"
+	// Deploy the MySQL DB
+	defer test_structure.RunTestStage(t, "teardown_db", func() { teardownDb(t, dbDirStage) })
+	test_structure.RunTestStage(t, "deploy_db", func() { deployDb(t, dbDirStage) })
 
-	defer test_structure.RunTestStage(t, "teardown_db", func() {
-		dbOpts := test_structure.LoadTerraformOptions(t, dbModuleDir)
-		defer terraform.Destroy(t, dbOpts)
-	})
+	// Deploy the hello-world-app
+	defer test_structure.RunTestStage(t, "teardown_app", func() { teardownHelloApp(t, appDirStage) })
+	test_structure.RunTestStage(t, "deploy_app", func() { deployHelloApp(t, dbDirStage, appDirStage) })
 
-	test_structure.RunTestStage(t, "deploy_db", func() {
-		uniqueId := random.UniqueId()
+	// Validate the hello-world-app works
+	test_structure.RunTestStage(t, "validate_app", func() { validateHelloApp(t, appDirStage) })
 
-		dbOpts := &terraform.Options{
-			TerraformDir: dbModuleDir,
-
-			// These modules use Terragrunt as a wrapper for Terraform
-			TerraformBinary: "terragrunt",
-
-			Vars: map[string]interface{}{
-				"db_name": fmt.Sprintf("test_%s", uniqueId),
-				"db_password": "password",
-			},
-
-			// terragrunt.hcl looks up its settings using env vars
-			EnvVars: map[string]string{
-				"TEST_STATE_DYNAMODB_TABLE": uniqueId,
-			},
-		}
-
-		// Save data to disk so that other test stages executed at a later
-		// time can read the data back in
-		test_structure.SaveTerraformOptions(t, dbModuleDir, dbOpts)
-		test_structure.SaveString(t, dbModuleDir, "uniqueId", uniqueId)
-		terraform.InitAndApply(t, dbOpts)
-	})
-
-	helloWorldAppDir := "../live/stage/services/hello-world-app"
-
-	defer test_structure.RunTestStage(t, "teardown_hello_world_app", func() {
-		helloOpts := test_structure.LoadTerraformOptions(t, helloWorldAppDir)
-		defer terraform.Destroy(t, helloOpts)
-	})
-
-	test_structure.RunTestStage(t, "deploy_hello_world_app", func() {
-		uniqueId := test_structure.LoadString(t, dbModuleDir, "uniqueId")
-
-		helloOpts := &terraform.Options{
-			TerraformDir: helloWorldAppDir,
-
-			// These modules use Terragrunt as a wrapper for Terraform
-			TerraformBinary: "terragrunt",
-
-			Vars: map[string]interface{}{
-				"environment": fmt.Sprintf("test-%s", uniqueId),
-			},
-
-			// terragrunt.hcl looks up its settings using env vars
-			EnvVars: map[string]string{
-				"TEST_STATE_DYNAMODB_TABLE": uniqueId,
-			},
-
-			// Retry up to 3 times, with 5 seconds between retries,
-			// on known errors
-			MaxRetries: 3,
-			TimeBetweenRetries: 5 * time.Second,
-			RetryableTerraformErrors: map[string]string{
-				"RequestError: send request failed": "Throttling issue?",
-			},
-		}
-
-		test_structure.SaveTerraformOptions(t, helloWorldAppDir, helloOpts)
-
-		terraform.InitAndApply(t, helloOpts)
-	})
-
-	test_structure.RunTestStage(t, "validate_hello_world_app", func() {
-		helloOpts := test_structure.LoadTerraformOptions(t, helloWorldAppDir)
-
-		albDnsName := terraform.OutputRequired(t, helloOpts, "alb_dns_name")
-		url := fmt.Sprintf("http://%s", albDnsName)
-
-		maxRetries := 10
-		timeBetweenRetries := 10 * time.Second
-
-		http_helper.HttpGetWithRetryWithCustomValidation(
-			t,
-			url,
-			maxRetries,
-			timeBetweenRetries,
-			func(status int, body string) bool {
-				return status == 200 && strings.Contains(body, "Hello, World")
-			},
-		)
-	})
-
-	test_structure.RunTestStage(t, "redeploy_hello_world_app", func() {
-		helloOpts := test_structure.LoadTerraformOptions(t, helloWorldAppDir)
-
-		albDnsName := terraform.OutputRequired(t, helloOpts, "alb_dns_name")
-		url := fmt.Sprintf("http://%s", albDnsName)
-
-		// Start checking every 1s that the app is responding with a 200 OK
-		stopChecking := make(chan bool, 1)
-		waitGroup, _ := http_helper.ContinuouslyCheckUrl(
-			t,
-			url,
-			stopChecking,
-			1*time.Second,
-		)
-
-		// Update the server text and redeploy
-		newServerText := "Hello, World, v2!"
-		helloOpts.Vars["server_text"] = newServerText
-		terraform.Apply(t, helloOpts)
-
-		// Make sure the new version deployed
-		maxRetries := 10
-		timeBetweenRetries := 10 * time.Second
-		http_helper.HttpGetWithRetryWithCustomValidation(
-			t,
-			url,
-			maxRetries,
-			timeBetweenRetries,
-			func(status int, body string) bool {
-				return status == 200 && strings.Contains(body, newServerText)
-			},
-		)
-
-		// Stop checking
-		stopChecking <- true
-		waitGroup.Wait()
-	})
+	// Redeploy the hello-world-app
+	test_structure.RunTestStage(t, "redeploy_app", func() { redeployHelloApp(t, appDirStage) })
 }
 
 func TestHelloWorldAppProdWithStages(t *testing.T)  {
 	t.Parallel()
 
-	dbModuleDir := "../live/prod/data-stores/mysql"
+	// Deploy the MySQL DB
+	defer test_structure.RunTestStage(t, "teardown_db", func() { teardownDb(t, dbDirProd) })
+	test_structure.RunTestStage(t, "deploy_db", func() { deployDb(t, dbDirProd) })
 
-	defer test_structure.RunTestStage(t, "teardown_db", func() {
-		dbOpts := test_structure.LoadTerraformOptions(t, dbModuleDir)
-		defer terraform.Destroy(t, dbOpts)
-	})
+	// Deploy the hello-world-app
+	defer test_structure.RunTestStage(t, "teardown_app", func() { teardownHelloApp(t, appDirProd) })
+	test_structure.RunTestStage(t, "deploy_app", func() { deployHelloApp(t, dbDirProd, appDirProd) })
 
-	test_structure.RunTestStage(t, "deploy_db", func() {
-		uniqueId := random.UniqueId()
+	// Validate the hello-world-app works
+	test_structure.RunTestStage(t, "validate_app", func() { validateHelloApp(t, appDirProd) })
 
-		dbOpts := &terraform.Options{
-			TerraformDir: dbModuleDir,
+	// Redeploy the hello-world-app
+	test_structure.RunTestStage(t, "redeploy_app", func() { redeployHelloApp(t, appDirProd) })
+}
 
-			// These modules use Terragrunt as a wrapper for Terraform
-			TerraformBinary: "terragrunt",
+func createDbOpts(terraformDir string, uniqueId string) *terraform.Options {
+	return &terraform.Options{
+		TerraformDir: terraformDir,
 
-			Vars: map[string]interface{}{
-				"db_name": fmt.Sprintf("test_%s", uniqueId),
-				"db_password": "password",
-			},
+		// These modules use Terragrunt as a wrapper for Terraform
+		TerraformBinary: "terragrunt",
 
-			// terragrunt.hcl looks up its settings using env vars
-			EnvVars: map[string]string{
-				"TEST_STATE_DYNAMODB_TABLE": uniqueId,
-			},
-		}
+		Vars: map[string]interface{}{
+			"db_name": fmt.Sprintf("test%s", uniqueId),
+			"db_password": "password",
+		},
 
-		test_structure.SaveTerraformOptions(t, dbModuleDir, dbOpts)
-		test_structure.SaveString(t, dbModuleDir, "uniqueId", uniqueId)
+		// terragrunt.hcl looks up its settings using env vars
+		EnvVars: map[string]string{
+			"TEST_STATE_DYNAMODB_TABLE": uniqueId,
+		},
+	}
+}
 
-		terraform.InitAndApply(t, dbOpts)
-	})
+func createHelloOpts(terraformDir string, uniqueId string) *terraform.Options {
+	return &terraform.Options{
+		TerraformDir: terraformDir,
 
-	helloWorldAppDir := "../live/prod/services/hello-world-app"
+		// These modules use Terragrunt as a wrapper for Terraform
+		TerraformBinary: "terragrunt",
 
-	defer test_structure.RunTestStage(t, "teardown_hello_world_app", func() {
-		helloOpts := test_structure.LoadTerraformOptions(t, helloWorldAppDir)
-		defer terraform.Destroy(t, helloOpts)
-	})
+		Vars: map[string]interface{}{
+			"environment": fmt.Sprintf("test-%s", uniqueId),
+		},
 
-	test_structure.RunTestStage(t, "deploy_hello_world_app", func() {
-		uniqueId := test_structure.LoadString(t, dbModuleDir, "uniqueId")
+		// terragrunt.hcl looks up its settings using env vars
+		EnvVars: map[string]string{
+			"TEST_STATE_DYNAMODB_TABLE": uniqueId,
+		},
 
-		helloOpts := &terraform.Options{
-			TerraformDir: helloWorldAppDir,
+		// Retry up to 3 times, with 5 seconds between retries,
+		// on known errors
+		MaxRetries: 3,
+		TimeBetweenRetries: 5 * time.Second,
+		RetryableTerraformErrors: map[string]string{
+			"RequestError: send request failed": "Throttling issue?",
+		},
+	}
+}
 
-			// These modules use Terragrunt as a wrapper for Terraform
-			TerraformBinary: "terragrunt",
+func validateApp(t *testing.T, helloOpts *terraform.Options) {
+	albDnsName := terraform.OutputRequired(t, helloOpts, "alb_dns_name")
+	url := fmt.Sprintf("http://%s", albDnsName)
 
-			Vars: map[string]interface{}{
-				"environment": fmt.Sprintf("test-%s", uniqueId),
-			},
+	maxRetries := 10
+	timeBetweenRetries := 10 * time.Second
 
-			// terragrunt.hcl looks up its settings using env vars
-			EnvVars: map[string]string{
-				"TEST_STATE_DYNAMODB_TABLE": uniqueId,
-			},
-
-			// Retry up to 3 times, with 5 seconds between retries, on known errors
-			MaxRetries: 3,
-			TimeBetweenRetries: 5 * time.Second,
-			RetryableTerraformErrors: map[string]string{
-				"RequestError: send request failed": "Intermittent error, possibly due to throttling?",
-			},
-		}
-
-		test_structure.SaveTerraformOptions(t, helloWorldAppDir, helloOpts)
-
-		terraform.InitAndApply(t, helloOpts)
-	})
-
-	test_structure.RunTestStage(t, "validate_hello_world_app", func() {
-		helloOpts := test_structure.LoadTerraformOptions(t, helloWorldAppDir)
-
-		albDnsName := terraform.OutputRequired(t, helloOpts, "alb_dns_name")
-		url := fmt.Sprintf("http://%s", albDnsName)
-
-		maxRetries := 10
-		timeBetweenRetries := 10 * time.Second
-
-		http_helper.HttpGetWithRetryWithCustomValidation(t, url, maxRetries, timeBetweenRetries, func(status int, body string) bool {
+	http_helper.HttpGetWithRetryWithCustomValidation(
+		t,
+		url,
+		maxRetries,
+		timeBetweenRetries,
+		func(status int, body string) bool {
 			return status == 200 && strings.Contains(body, "Hello, World")
-		})
-	})
+		},
+	)
+}
 
-	test_structure.RunTestStage(t, "redeploy_hello_world_app", func() {
-		helloOpts := test_structure.LoadTerraformOptions(t, helloWorldAppDir)
+func teardownDb(t *testing.T, dbDir string) {
+	dbOpts := test_structure.LoadTerraformOptions(t, dbDir)
+	defer terraform.Destroy(t, dbOpts)
+}
 
-		albDnsName := terraform.OutputRequired(t, helloOpts, "alb_dns_name")
-		url := fmt.Sprintf("http://%s", albDnsName)
+func deployDb(t *testing.T, dbDir string) {
+	uniqueId := random.UniqueId()
+	dbOpts := createDbOpts(dbDir, uniqueId)
 
-		// Start checking every 1s that the app is responding with a 200 OK
-		stopChecking := make(chan bool, 1)
-		waitGroup, _ := http_helper.ContinuouslyCheckUrl(t, url, stopChecking, 1*time.Second)
+	// Save data to disk so that other test stages executed at a later
+	// time can read the data back in
+	test_structure.SaveTerraformOptions(t, dbDir, dbOpts)
+	test_structure.SaveString(t, dbDir, "uniqueId", uniqueId)
 
-		// Update the server text and redeploy
-		newServerText := "Hello, World, v2!"
-		helloOpts.Vars["server_text"] = newServerText
-		terraform.Apply(t, helloOpts)
+	terraform.InitAndApply(t, dbOpts)
+}
 
-		// Make sure the new version deployed
-		maxRetries := 10
-		timeBetweenRetries := 10 * time.Second
-		http_helper.HttpGetWithRetryWithCustomValidation(t, url, maxRetries, timeBetweenRetries, func(status int, body string) bool {
+func teardownHelloApp(t *testing.T, helloAppDir string) {
+	helloOpts := test_structure.LoadTerraformOptions(t, helloAppDir)
+	defer terraform.Destroy(t, helloOpts)
+}
+
+func deployHelloApp(t *testing.T, dbDir string, helloAppDir string) {
+	uniqueId := test_structure.LoadString(t, dbDir, "uniqueId")
+	helloOpts := createHelloOpts(helloAppDir, uniqueId)
+
+	// Save data to disk so that other test stages executed at a later
+	// time can read the data back in
+	test_structure.SaveTerraformOptions(t, helloAppDir, helloOpts)
+
+	terraform.InitAndApply(t, helloOpts)
+}
+
+func validateHelloApp(t *testing.T, helloAppDir string)  {
+	helloOpts := test_structure.LoadTerraformOptions(t, helloAppDir)
+	validateApp(t, helloOpts)
+}
+
+func redeployHelloApp(t *testing.T, helloAppDir string) {
+	helloOpts := test_structure.LoadTerraformOptions(t, helloAppDir)
+
+	albDnsName := terraform.OutputRequired(t, helloOpts, "alb_dns_name")
+	url := fmt.Sprintf("http://%s", albDnsName)
+
+	// Start checking every 1s that the app is responding with a 200 OK
+	stopChecking := make(chan bool, 1)
+	waitGroup, _ := http_helper.ContinuouslyCheckUrl(
+		t,
+		url,
+		stopChecking,
+		1*time.Second,
+	)
+
+	// Update the server text and redeploy
+	newServerText := "Hello, World, v2!"
+	helloOpts.Vars["server_text"] = newServerText
+	terraform.Apply(t, helloOpts)
+
+	// Make sure the new version deployed
+	maxRetries := 10
+	timeBetweenRetries := 10 * time.Second
+	http_helper.HttpGetWithRetryWithCustomValidation(
+		t,
+		url,
+		maxRetries,
+		timeBetweenRetries,
+		func(status int, body string) bool {
 			return status == 200 && strings.Contains(body, newServerText)
-		})
+		},
+	)
 
-		// Stop checking
-		stopChecking <- true
-		waitGroup.Wait()
-	})
+	// Stop checking
+	stopChecking <- true
+	waitGroup.Wait()
 }

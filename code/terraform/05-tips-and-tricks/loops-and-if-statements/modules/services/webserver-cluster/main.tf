@@ -12,6 +12,12 @@ resource "aws_launch_configuration" "example" {
       ? data.template_file.user_data[0].rendered
       : data.template_file.user_data_new[0].rendered
   )
+
+  # Required when using a launch configuration with an auto scaling group.
+  # https://www.terraform.io/docs/providers/aws/r/launch_configuration.html
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 data "template_file" "user_data" {

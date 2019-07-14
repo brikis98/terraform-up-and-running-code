@@ -11,7 +11,7 @@ func TestMySqlExample(t *testing.T)  {
 	t.Parallel()
 
 	terraformOptions := &terraform.Options{
-		// You should update this relative path to point at your alb
+		// You should update this relative path to point at your mysql
 		// example directory!
 		TerraformDir: "../examples/mysql",
 		Vars: map[string]interface{}{

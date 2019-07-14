@@ -22,39 +22,20 @@ class Handlers
   def handle(path)
     case path
     when "/"
-      self.hello
+      [200, 'text/plain', 'Hello, World']
     when "/api"
-      self.api
+      [201, 'application/json', '{"foo":"bar"}']
     when "/web-service"
-      self.web_service
-    else
-      self.not_found
-    end
-  end
-
-  def hello
-    [200, 'text/plain', 'Hello, World']
-  end
-
-  def api
-    [201, 'application/json', '{"foo":"bar"}']
-  end
-
+      # New endpoint that calls a web service
 =begin
-
-  def web_service
-    uri = URI("http://www.example.org")
-    response = Net::HTTP.get_response(uri)
-    [response.code.to_i, response['Content-Type'], response.body]
-  end
+      uri = URI("http://www.example.org")
+      response = Net::HTTP.get_response(uri)
+      [response.code.to_i, response['Content-Type'], response.body]
 =end
-
-  def web_service
-    @web_service.proxy
-  end
-
-  def not_found
-    [404, 'text/plain', 'Not Found']
+      @web_service.proxy
+    else
+      [404, 'text/plain', 'Not Found']
+    end
   end
 end
 

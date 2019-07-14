@@ -16,8 +16,8 @@ func TestHelloWorldAppExample(t *testing.T)  {
 	t.Parallel()
 
 	opts := &terraform.Options{
-		// You should update this relative path to point at your alb
-		// example directory!
+		// You should update this relative path to point at your
+		// hello-world-app example directory!
 		TerraformDir: "../examples/hello-world-app/standalone",
 
 		Vars: map[string]interface{}{

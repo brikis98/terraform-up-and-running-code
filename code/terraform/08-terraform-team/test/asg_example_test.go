@@ -11,7 +11,7 @@ func TestAsgExample(t *testing.T)  {
 	t.Parallel()
 
 	terraformOptions := &terraform.Options{
-		// You should update this relative path to point at your alb
+		// You should update this relative path to point at your asg
 		// example directory!
 		TerraformDir: "../examples/asg",
 		Vars: map[string]interface{}{
