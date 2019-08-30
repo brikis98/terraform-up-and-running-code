@@ -1,8 +1,9 @@
 # S3 Remote State Example
 
-This folder contains example [Terraform](https://www.terraform.io/) templates that an [S3](https://aws.amazon.com/s3/)
-bucket in an [Amazon Web Services (AWS) account](http://aws.amazon.com/). The S3 bucket can be used for [remote state
-storage](https://www.terraform.io/docs/state/remote/).
+This folder contains example [Terraform](https://www.terraform.io/) configuration that create an 
+[S3](https://aws.amazon.com/s3/) bucket and [DynamoDB](https://aws.amazon.com/dynamodb/) table in an 
+[Amazon Web Services (AWS) account](http://aws.amazon.com/). The S3 bucket and DynamoDB table can be used as a 
+[remote backend for Terraform](https://www.terraform.io/docs/backends/).
 
 For more info, please see Chapter 3, "How to Manage Terraform State", of 
 *[Terraform: Up and Running](http://www.terraformupandrunning.com)*.
@@ -12,7 +13,7 @@ For more info, please see Chapter 3, "How to Manage Terraform State", of
 * You must have [Terraform](https://www.terraform.io/) installed on your computer. 
 * You must have an [Amazon Web Services (AWS) account](http://aws.amazon.com/).
 
-Please note that this code was written for Terraform 0.8.x.
+Please note that this code was written for Terraform 0.12.x.
 
 ## Quick start
 
@@ -29,24 +30,26 @@ export AWS_ACCESS_KEY_ID=(your access key id)
 export AWS_SECRET_ACCESS_KEY=(your secret access key)
 ```
 
-You may want to specify a name for your bucket in `vars.tf` using the `default` parameter:
+Specify a name for the S3 bucket and DynamoDB table in `variables.tf` using the `default` parameter:
 
 ```hcl
 variable "bucket_name" {
   description = "The name of the S3 bucket. Must be globally unique."
-  default = "(YOUR_BUCKET_NAME)"
+  type        = string
+  default     = "<YOUR BUCKET NAME>"
 }
-```
 
-Validate the templates:
-
-```
-terraform plan
+variable "table_name" {
+  description = "The name of the DynamoDB table. Must be unique in this AWS account."
+  type        = string
+  default     = "<YOUR TABLE NAME>"
+}
 ```
 
 Deploy the code:
 
 ```
+terraform init
 terraform apply
 ```
 

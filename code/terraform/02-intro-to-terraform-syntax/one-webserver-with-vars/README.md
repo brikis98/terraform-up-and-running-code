@@ -1,6 +1,6 @@
 # Web Server Example
 
-This folder contains example [Terraform](https://www.terraform.io/) templates that deploy a single web server (using 
+This folder contains an example [Terraform](https://www.terraform.io/) configuration that deploys a single web server (using 
 [EC2](https://aws.amazon.com/ec2/)) in an [Amazon Web Services (AWS) account](http://aws.amazon.com/). The web server
 listens on port 8080 (which is defined as a variable in this example) and returns the text "Hello, World" for the `/` 
 URL.
@@ -13,7 +13,7 @@ For more info, please see Chapter 2, "Getting started with Terraform", of
 * You must have [Terraform](https://www.terraform.io/) installed on your computer. 
 * You must have an [Amazon Web Services (AWS) account](http://aws.amazon.com/).
 
-Please note that this code was written for Terraform 0.8.x.
+Please note that this code was written for Terraform 0.12.x.
 
 ## Quick start
 
@@ -30,15 +30,10 @@ export AWS_ACCESS_KEY_ID=(your access key id)
 export AWS_SECRET_ACCESS_KEY=(your secret access key)
 ```
 
-Validate the templates:
-
-```
-terraform plan
-```
-
 Deploy the code:
 
 ```
+terraform init
 terraform apply
 ```
 
