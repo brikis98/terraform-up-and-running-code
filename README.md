@@ -1,18 +1,7 @@
 # Terraform: Up & Running Code
 
-This repo contains the code samples for the book *[Terraform: Up and Running](http://www.terraformupandrunning.com)* by 
-[Yevgeniy Brikman](http://www.ybrikman.com).
-
-
-
-## IMPORTANT NOTE ON 2ND EDITION
-
-The 2nd edition of *Terraform: Up & Running* will be available shortly! If you're reading an early copy of the new edition of the book, please head over to the [2nd-edition branch](https://github.com/brikis98/terraform-up-and-running-code/tree/2nd-edition), which has all the code updated to Terraform 0.12, tons of new code for the new chapters in the book, and so on. It's a work in progress, so think of this branch as a preview of what things will look like when all the updates are finished.
-
-
-## IMPORTANT NOTE ON 2ND EDITION
-
-The 2nd edition of *Terraform: Up & Running* will be available shortly! If you're reading an early copy of the new edition of the book, please head over to the [2nd-edition branch](https://github.com/brikis98/terraform-up-and-running-code/tree/2nd-edition), which has all the code updated to Terraform 0.12, tons of new code for the new chapters in the book, and so on. It's a work in progress, so think of this branch as a preview of what things will look like when all the updates are finished.
+This repo contains the code samples for the book *[Terraform: Up and Running](http://www.terraformupandrunning.com)*,
+2nd edition, by [Yevgeniy Brikman](http://www.ybrikman.com).
 
 
 
@@ -34,6 +23,13 @@ The example code in *Terraform: Up and Running* are mostly for Amazon Web Servic
 to translate these examples to their equivalents on other cloud providers, such as Google Cloud and Azure, here:
 https://github.com/mjuenema/Terraform-Up-and-Running-Code-Samples-Translated/. 
 
+
+
+## Looking for the 1st edition?
+
+All the code examples in the `master` branch are for the 2nd edition of *Terraform: Up & Running*. If you're looking
+for the code examples from the 1st edition, please head over to the 
+[1st-edition branch](https://github.com/brikis98/terraform-up-and-running-code/tree/1st-edition).
 
 
 
