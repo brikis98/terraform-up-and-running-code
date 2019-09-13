@@ -58,7 +58,7 @@ variable "health_check_type" {
 variable "user_data" {
   description = "The User Data script to run in each Instance at boot"
   type        = string
-  default     = ""
+  default     = "Hello World"
 }
 
 variable "custom_tags" {
