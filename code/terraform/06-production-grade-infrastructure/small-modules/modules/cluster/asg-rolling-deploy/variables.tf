@@ -44,7 +44,7 @@ variable "enable_autoscaling" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 variable "target_group_arns" {
-  description = "The ARNs of load balancer target groups in which to register Instances"
+  description = "The ARNs of ELB target groups in which to register Instances"
   type        = list(string)
   default     = []
 }
@@ -58,7 +58,7 @@ variable "health_check_type" {
 variable "user_data" {
   description = "The User Data script to run in each Instance at boot"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "custom_tags" {
