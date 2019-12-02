@@ -14,7 +14,7 @@ class TestWebServer < Test::Unit::TestCase
     status_code, content_type, body = @handlers.handle("/")
     assert_equal(200, status_code)
     assert_equal('text/plain', content_type)
-    assert_equal('Hello, World', body)
+    assert_equal('Hello, World V2', body)
   end
 
   def test_unit_api
@@ -50,7 +50,7 @@ class TestWebServer < Test::Unit::TestCase
     do_integration_test('/', lambda { |response|
       assert_equal(200, response.code.to_i)
       assert_equal('text/plain', response['Content-Type'])
-      assert_equal('Hello, World', response.body)
+      assert_equal('Hello, World V2', response.body)
     })
   end
 
