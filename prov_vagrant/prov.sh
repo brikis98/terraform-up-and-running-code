@@ -51,8 +51,8 @@ ln -s "${terraform_bin}" /usr/local/bin/
 # niceties for terraform class
 # {} is courtesy of https://github.com/koalaman/shellcheck/wiki/SC2129
 {
-    # make sure at /vagrant for synced folder
-    printf 'pushd /vagrant\n'
+    # make sure at /vagrant for synced folder and ignore if current dir starts with /vagrant
+    printf 'if pwd -P | grep "^/vagrant/" 1> /dev/null ; then : ; else pushd /vagrant ; fi\n'
 
     # read in AWS id on login
     printf '%s\n' "read -p 'Please input your AWS access key for environment variable use:' key_id && printf 'export AWS_ACCESS_KEY_ID=\"%s\"\n' \${key_id} >> ~/.bashrc"
