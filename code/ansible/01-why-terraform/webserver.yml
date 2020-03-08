@@ -10,6 +10,10 @@
   apt:
     name: apache2
 
+- name: Install Git
+  apt:
+    name: git
+    
 - name: Copy the code from the repository
   git: repo=https://github.com/brikis98/php-app.git dest=/var/www/html/app
 
