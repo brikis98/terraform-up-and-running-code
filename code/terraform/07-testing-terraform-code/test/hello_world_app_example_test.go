@@ -3,6 +3,7 @@ package test
 import (
 	"fmt"
 	"github.com/gruntwork-io/terratest/modules/random"
+	"strings"
 
 	"github.com/gruntwork-io/terratest/modules/http-helper"
 
@@ -36,19 +37,18 @@ func TestHelloWorldAppExample(t *testing.T)  {
 	albDnsName := terraform.OutputRequired(t, opts, "alb_dns_name")
 	url := fmt.Sprintf("http://%s", albDnsName)
 
-	expectedStatus := 200
-	expectedBody := "Hello, World"
-
 	maxRetries := 10
 	timeBetweenRetries := 10 * time.Second
 
-	http_helper.HttpGetWithRetry(
+	http_helper.HttpGetWithRetryWithCustomValidation(
 		t,
 		url,
-		expectedStatus,
-		expectedBody,
 		maxRetries,
 		timeBetweenRetries,
+		func(status int, body string) bool {
+			return status == 200 &&
+				strings.Contains(body, "Hello, World")
+		},
 	)
 
 }
