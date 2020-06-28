@@ -10,8 +10,7 @@ provider "aws" {
 }
 
 resource "aws_iam_user" "existing_user" {
-  # You should change this to the username of an IAM user that already
-  # exists so you can practice using the terraform import command
+  # Make sure to update this to your own user name!
   name = "yevgeniy.brikman"
 }
 
