@@ -1,6 +1,7 @@
 package test
 
 import (
+	"crypto/tls"
 	"fmt"
 	"github.com/gruntwork-io/terratest/modules/http-helper"
 	"github.com/gruntwork-io/terratest/modules/random"
@@ -21,7 +22,6 @@ func TestAlbExample(t *testing.T)  {
 		Vars: map[string]interface{}{
 			"alb_name": fmt.Sprintf("test-%s", random.UniqueId()),
 		},
-
 	}
 
 	// Clean up everything at the end of the test
@@ -45,6 +45,7 @@ func TestAlbExample(t *testing.T)  {
 	http_helper.HttpGetWithRetry(
 		t,
 		url,
+		&tls.Config{},
 		expectedStatus,
 		expectedBody,
 		maxRetries,
