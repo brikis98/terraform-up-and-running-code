@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.12, < 0.13"
+  required_version = ">= 0.12"
 }
 
 provider "aws" {
@@ -14,11 +14,11 @@ terraform {
     # This backend configuration is filled in automatically at test time by Terratest. If you wish to run this example
     # manually, uncomment and fill in the config below.
 
-    # bucket         = "<YOUR S3 BUCKET>"
-    # key            = "<SOME PATH>/terraform.tfstate"
-    # region         = "us-east-2"
-    # dynamodb_table = "<YOUR DYNAMODB TABLE>"
-    # encrypt        = true
+    bucket         = "terraform-up-and-running-code-course-05-2021"
+    key            = "staging/terraform.tfstate"
+    region         = "us-east-2"
+    dynamodb_table = "terraform-up-and-running-code-course-05-2021"
+    encrypt        = true
   }
 }
 
