@@ -1,4 +1,6 @@
 # Terraform: Up & Running Code
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbrikis98%2Fterraform-up-and-running-code.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbrikis98%2Fterraform-up-and-running-code?ref=badge_shield)
+
 
 This repo contains the code samples for the book *[Terraform: Up and Running](http://www.terraformupandrunning.com)*,
 2nd edition, by [Yevgeniy Brikman](http://www.ybrikman.com).
@@ -36,3 +38,6 @@ for the code examples from the 1st edition, please head over to the
 ## License
 
 This code is released under the MIT License. See LICENSE.txt.
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbrikis98%2Fterraform-up-and-running-code.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbrikis98%2Fterraform-up-and-running-code?ref=badge_large)
