@@ -3,7 +3,24 @@ provider "aws" {
   max_retries = 1
 }
 
+#
+# Terraform state
+#
+
+terraform {
+  backend "s3" {
+    bucket = "terraform-up-and-running-acs-state"
+    key = "global/s3/work/terraform.tfstate"
+    region = "eu-west-1"
+
+    dynamodb_table = "terraform-up-and-running-locks"
+    encrypt = true
+  }
+}
+
+#
 # Web Server
+#
 
 resource "aws_instance" "example" {
 
@@ -24,7 +41,10 @@ resource "aws_instance" "example" {
   }
 }
 
-# Shared security group y web server and cluster
+#
+# Shared security group for web server and cluster
+#
+
 resource "aws_security_group" "instance" {
   name = "terraform-example-instance"
 
@@ -36,7 +56,9 @@ resource "aws_security_group" "instance" {
   }
 }
 
+#
 # Cluster of Web Servers
+#
 
 data "aws_vpc" "default" {
   default = true
@@ -79,7 +101,9 @@ resource "aws_autoscaling_group" "example" {
   }
 }
 
+#
 # Load Balancer
+#
 
 resource "aws_lb" "example" {
   name = "terraform-asg-example"

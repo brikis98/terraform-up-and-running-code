@@ -4,12 +4,6 @@ variable "aws_region" {
   default = "eu-west-1"
 }
 
-variable "web_port" {
-  description = "Port used by the web server"
-  type = number
-  default = 8090
-}
-
 variable "ami_ubuntu_21_04" {
   description = "AMI for Ubuntu 21.04"
   type = string
