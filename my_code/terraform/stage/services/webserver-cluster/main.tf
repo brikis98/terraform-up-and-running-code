@@ -10,7 +10,7 @@ provider "aws" {
 terraform {
   backend "s3" {
     bucket = "terraform-up-and-running-acs-state"
-    key = "global/s3/work/terraform.tfstate"
+    key = "stage/services/webserver-cluster/terraform.tfstate"
     region = "eu-west-1"
 
     dynamodb_table = "terraform-up-and-running-locks"
@@ -19,12 +19,28 @@ terraform {
 }
 
 #
+# Terraform remote state
+#
+
+data "terraform_remote_state" "db" {
+  backend = "s3"
+
+  config = {
+    bucket = "terraform-up-and-running-acs-state"
+    key = "stage/data-stores/mysql/terraform.tfstate"
+    region = "eu-west-1"
+  }
+}
+
+
+#
 # Web Server
 #
 
+
 resource "aws_instance" "example" {
 
-  count = 0  # inactive
+  count = 0  # inactive, service in a cluster now
 
   ami = var.ami_ubuntu_21_04
   instance_type = "t2.micro"
@@ -33,6 +49,8 @@ resource "aws_instance" "example" {
   user_data = <<-EOF
     #!/bin/bash
     echo "Hello, World" > index.html
+    echo "{data.terraform_remote_state.db.outputs.address}" >> index.html
+    echo "{data.terraform_remote_state.db.outputs.port}" >> index.html
     nohup busybox httpd -f -p ${var.web_port} &
   EOF
 
@@ -68,16 +86,23 @@ data "aws_subnet_ids" "default" {
   vpc_id = data.aws_vpc.default.id
 }
 
+data "template_file" "user_data" {
+  template = file("user-data.sh")
+
+  vars = {
+    web_port = var.web_port
+    server_port = var.web_port
+    db_address = data.terraform_remote_state.db.outputs.address
+    db_port = data.terraform_remote_state.db.outputs.port
+  }
+}
+
 resource "aws_launch_configuration" "example"  {
   image_id = var.ami_ubuntu_21_04
   instance_type = "t2.micro"
   security_groups = [aws_security_group.instance.id]
 
-  user_data = <<-EOF
-    #!/bin/bash
-    echo "Hello, World" > index.html
-    nohup busybox httpd -f -p ${var.web_port} &
-    EOF
+  user_data = data.template_file.user_data.rendered
 
   lifecycle {
     create_before_destroy = true
