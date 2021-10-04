@@ -19,7 +19,7 @@ terraform {
 }
 
 #
-# Terraform remote state
+# Terraform remote state data
 #
 
 data "terraform_remote_state" "db" {
@@ -29,48 +29,6 @@ data "terraform_remote_state" "db" {
     bucket = "terraform-up-and-running-acs-state"
     key = "stage/data-stores/mysql/terraform.tfstate"
     region = "eu-west-1"
-  }
-}
-
-
-#
-# Web Server
-#
-
-
-resource "aws_instance" "example" {
-
-  count = 0  # inactive, service in a cluster now
-
-  ami = var.ami_ubuntu_21_04
-  instance_type = "t2.micro"
-  vpc_security_group_ids = [aws_security_group.instance.id]
-
-  user_data = <<-EOF
-    #!/bin/bash
-    echo "Hello, World" > index.html
-    echo "{data.terraform_remote_state.db.outputs.address}" >> index.html
-    echo "{data.terraform_remote_state.db.outputs.port}" >> index.html
-    nohup busybox httpd -f -p ${var.web_port} &
-  EOF
-
-  tags = {
-    Name = "terraform-example"
-  }
-}
-
-#
-# Shared security group for web server and cluster
-#
-
-resource "aws_security_group" "instance" {
-  name = "terraform-example-instance"
-
-  ingress {
-    from_port = var.web_port
-    to_port = var.web_port
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
@@ -92,15 +50,42 @@ data "template_file" "user_data" {
   vars = {
     web_port = var.web_port
     server_port = var.web_port
-    db_address = data.terraform_remote_state.db.outputs.address
-    db_port = data.terraform_remote_state.db.outputs.port
+  }
+}
+
+resource "aws_security_group" "instance_lb" {
+  name = "instance_lb"
+
+  ingress {
+    from_port = var.web_port
+    to_port = var.web_port
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 0
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "webserver-cluster"
   }
 }
 
 resource "aws_launch_configuration" "example"  {
   image_id = var.ami_ubuntu_21_04
   instance_type = "t2.micro"
-  security_groups = [aws_security_group.instance.id]
+  security_groups = [aws_security_group.instance_lb.id]
 
   user_data = data.template_file.user_data.rendered
 
