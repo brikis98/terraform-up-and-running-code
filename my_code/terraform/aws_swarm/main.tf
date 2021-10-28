@@ -1,5 +1,5 @@
 provider "aws" {
-  region = var.aws_region
+  region      = var.aws_region
   max_retries = 1
 }
 
@@ -7,23 +7,79 @@ resource "aws_security_group" "swarm-node" {
   name = "swarm-node"
 
   ingress {
-    from_port = var.web_port
-    to_port = var.web_port
-    protocol = "tcp"
+    from_port   = var.web_port
+    to_port     = var.web_port
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 2376
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 2377
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 7946
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 7946
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 4789
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 4789
+    protocol    = "udp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    from_port = 0
-    to_port = 80
-    protocol = "tcp"
+    from_port   = 0
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 443
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -34,8 +90,8 @@ resource "aws_security_group" "swarm-node" {
 
 resource "aws_instance" "swarm-node" {
 
-  ami = var.ami_ubuntu_21_04
-  instance_type = "t2.micro"
+  ami                    = var.ami_ubuntu_21_04
+  instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.swarm-node.id]
 
   user_data = <<-EOF
@@ -46,6 +102,8 @@ resource "aws_instance" "swarm-node" {
     chmod 700 ~/.ssh/authorized_keys
     echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
     service ssh start
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sh get-docker.sh
     echo "Hello, World" > index.html
     pwd >> index.html
     id >> index.html
