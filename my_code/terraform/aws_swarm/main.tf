@@ -78,8 +78,43 @@ resource "aws_security_group" "swarm-node" {
 
   egress {
     from_port   = 0
-    to_port     = 443
+    to_port     = 2376
     protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 2377
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 7946
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 7946
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 4789
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 4789
+    protocol    = "udp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -90,6 +125,7 @@ resource "aws_security_group" "swarm-node" {
 
 resource "aws_instance" "swarm-node" {
 
+  count = 3
   ami                    = var.ami_ubuntu_21_04
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.swarm-node.id]

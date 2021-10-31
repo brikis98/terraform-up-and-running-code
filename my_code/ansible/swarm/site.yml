@@ -1,0 +1,6 @@
+- hosts: cluster
+  remote_user: root
+  become: yes
+
+  roles:
+    - swarm

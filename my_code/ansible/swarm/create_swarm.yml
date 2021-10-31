@@ -1,0 +1,94 @@
+- hosts: cluster
+  tasks:
+
+    - name: add default route so ansible_default_ipv4 is defined
+      shell: >
+        route add default gw 192.168.56.1
+      register: swarm_status
+      ignore_errors: True
+
+    - name: determine swarm status
+      shell: >
+        docker info --format \{\{.Swarm.LocalNodeState\}\}
+      register: swarm_status
+
+    - name: Print the swarm status
+      debug:
+        msg: "The swarm status is ->{{ swarm_status.stdout }}<-"
+
+    - name: create swarm_active group
+      add_host:
+        hostname: "{{ item }}"
+        groups: swarm_active
+      with_items: "{{ ansible_play_hosts | default(play_hosts) }}"
+      when: "'active' in hostvars[item].swarm_status.stdout_lines"
+      run_once: true
+
+    - name: Print the swarm_on group
+      debug:
+        msg: "Swarm active nodes {{item}}"
+      with_items: "{{ groups.swarm_active }}"
+      when: "'swarm_active' in groups"
+      run_once: true
+
+    - name: create swarm_inactive group
+      add_host:
+        hostname: "{{ item }}"
+        groups: swarm_inactive
+      with_items: "{{ ansible_play_hosts | default(play_hosts) }}"
+      when: "'inactive' in hostvars[item].swarm_status.stdout_lines"
+      run_once: true
+
+# when the swarm_manager_operational group is empty, meaning there
+# are no hosts running swarm, we need to initialize one of the hosts
+# then add it to the swarm_manager_operational group
+- hosts: swarm_inactive[0]
+  tasks:
+    - name: initialize swarm cluster
+      shell: >
+        docker swarm init --advertise-addr={{ swarm_iface | ansible_default_ipv4.address }}:2377
+      when: "'swarm_active' not in groups"
+      register: swarm_first_node
+
+    - name: add first node to swarm_active group
+      add_host:
+        hostname: "{{ item }}"
+        groups: swarm_active
+      with_items: "{{ ansible_play_hosts | default(play_hosts) }}"
+      when: swarm_first_node.changed
+
+# retrieve the swarm tokens and populate a list of ips listening on
+# the swarm port 2377
+- hosts: swarm_active[0]
+  vars:
+    iface: "{{ ansible_default_ipv4['interface'] }}"
+  tasks:
+    - name: retrieve swarm manager token
+      shell: docker swarm join-token -q manager
+      register: swarm_manager_token
+    - name: populate list of manager ips
+      add_host:
+        hostname: "{{ hostvars[item]['ansible_' + iface]['ipv4']['address'] }}"
+        groups: swarm_manager_ips
+      with_items: "{{ ansible_play_hosts | default(play_hosts) }}"
+
+# join the manager hosts not yet initialized to the swarm cluster
+- hosts: swarm_inactive
+  become: true
+  vars:
+    token: "{{ hostvars[groups['swarm_active'][0]]['swarm_manager_token']['stdout'] }}"
+  tasks:
+    - name: join inactive nodes as manager to cluster
+      shell: >
+        docker swarm join --advertise-addr={{ ansible_default_ipv4.address }}:2377
+        --token={{ token }}
+        {{ groups['swarm_manager_ips'][0] }}:2377
+
+# show the nodes of the cluster
+- hosts: swarm_active[0]
+  tasks:
+    - name: Show nodes in the cluster
+      shell: docker node ls
+      register: cluster_nodes
+    - debug:
+        var: cluster_nodes.stdout_lines
