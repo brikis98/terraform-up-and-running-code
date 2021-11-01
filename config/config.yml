@@ -1,0 +1,17 @@
+{
+  "commit_description": "This is the commit description",
+  "bundle_id": "ITB_1",
+  "cx": {
+    "project_id": "viasat-chatbot-nlp",
+    "region_id": "us-central1",
+    "agent_id": "b183d9b5-bd1a-4f5b-bb90-b174cfe0d197",
+    "display_name": "<provided, or populated by export code?>",
+    "env_name": "test",
+    "env_id": "<populated by export code - do we need this?>"
+  },
+  "ciao": {
+    "ecosystem_name": "brazildevrc",
+    "itb_identifier_port": "444",
+    "commit_hash": "908487d3efc527d69be7a5779c390c58394f7a95",
+  }
+}
