@@ -1,0 +1,5 @@
+- hosts: cluster
+  tasks:
+    - name: remove node from the swarm
+      shell: >
+        docker swarm leave --force

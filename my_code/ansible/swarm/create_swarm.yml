@@ -46,7 +46,7 @@
   tasks:
     - name: initialize swarm cluster
       shell: >
-        docker swarm init --advertise-addr={{ swarm_iface | ansible_default_ipv4.address }}:2377
+        docker swarm init --advertise-addr={{ ansible_default_ipv4.address }}:2377
       when: "'swarm_active' not in groups"
       register: swarm_first_node
 
