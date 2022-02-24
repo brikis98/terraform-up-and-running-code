@@ -11,7 +11,7 @@ For more info, please see Chapter 3, "How to Manage Terraform State", of
 * You must have [Terraform](https://www.terraform.io/) installed on your computer. 
 * You must have an [Amazon Web Services (AWS) account](http://aws.amazon.com/).
 
-Please note that this code was written for Terraform 0.12.x.
+Please note that this code was written for Terraform 1.x.
 
 ## Quick start
 
@@ -26,6 +26,13 @@ environment variables:
 ```
 export AWS_ACCESS_KEY_ID=(your access key id)
 export AWS_SECRET_ACCESS_KEY=(your secret access key)
+```
+
+Configure the database credentials as environment variables:
+
+```
+export TF_VAR_db_username=(desired database username)
+export TF_VAR_db_password=(desired database password)
 ```
 
 Open `main.tf`, uncomment the `backend` configuration, and fill in the name of your S3 bucket, DynamoDB table, and

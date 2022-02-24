@@ -1,9 +1,9 @@
 - ec2:
     count: 10
-    image: ami-0c55b159cbfafe1f0
+    image: ami-0fb653ca2d3203ac1
     instance_type: t2.micro
 
 - ec2:
     count: 5
-    image: ami-0c55b159cbfafe1f0
+    image: ami-0fb653ca2d3203ac1
     instance_type: t2.micro
