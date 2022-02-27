@@ -3,9 +3,13 @@ output "service_status" {
   description = "The K8S Service status"
 }
 
+local {
+  status = kubernetes_service.app.status
+}
+
 output "service_endpoint" {
   value = try(
-    "http://${kubernetes_service.app.status[0]["load_balancer"][0]["ingress"][0]["hostname"]}",
+    "http://${local.status[0]["load_balancer"][0]["ingress"][0]["hostname"]}",
     "(error parsing hostname from status)"
   )
   description = "The K8S Service endpoint"

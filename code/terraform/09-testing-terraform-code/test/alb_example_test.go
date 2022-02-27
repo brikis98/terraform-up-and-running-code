@@ -77,13 +77,15 @@ func TestAlbExamplePlan(t *testing.T) {
 	require.Equal(t, 0, resourceCounts.Destroy)
 
 	// An example of how to check specific values in the plan output
-	planStruct := terraform.InitAndPlanAndShowWithStructNoLogTempPlanFile(t, opts)
+	planStruct :=
+		terraform.InitAndPlanAndShowWithStructNoLogTempPlanFile(t, opts)
 
-	albResource, exists := planStruct.ResourcePlannedValuesMap["module.alb.aws_lb.example"]
+	alb, exists :=
+		planStruct.ResourcePlannedValuesMap["module.alb.aws_lb.example"]
 	require.True(t, exists, "aws_lb resource must exist")
 
-	name, exists := albResource.AttributeValues["name"]
-	require.True(t, exists, "aws_lb resource must have name parameter")
+	name, exists := alb.AttributeValues["name"]
+	require.True(t, exists, "missing name parameter")
 	require.Equal(t, albName, name)
 }
 

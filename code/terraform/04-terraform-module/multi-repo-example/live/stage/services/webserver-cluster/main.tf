@@ -17,11 +17,7 @@ module "webserver_cluster" {
 
   # Since the terraform-up-and-running-code repo is open source, we're using an HTTPS URL here. If it was a private
   # repo, we'd instead use an SSH URL (git@github.com:brikis98/terraform-up-and-running-code.git) to leverage SSH auth
-  # TODO: restore proper source URL with ref 0.2.0 when ready!
-  # source = "github.com/brikis98/terraform-up-and-running-code//code/terraform/04-terraform-module/module-example/modules/services/webserver-cluster?ref=v0.1.0"
-
-  # TODO: This is a temporary replacement for the proper source URL above!
-  source = "../../../../../module-example/modules/services/webserver-cluster"
+  source = "github.com/brikis98/terraform-up-and-running-code//code/terraform/04-terraform-module/module-example/modules/services/webserver-cluster?ref=v0.2.0"
 
   cluster_name           = var.cluster_name
   db_remote_state_bucket = var.db_remote_state_bucket

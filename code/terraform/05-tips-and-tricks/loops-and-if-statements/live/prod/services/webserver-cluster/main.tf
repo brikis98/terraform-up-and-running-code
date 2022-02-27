@@ -26,8 +26,8 @@ module "webserver_cluster" {
   enable_autoscaling   = true
 
   custom_tags = {
-    Owner      = "team-foo"
-    DeployedBy = "terraform"
+    Owner     = "team-foo"
+    ManagedBy = "terraform"
   }
 
 }

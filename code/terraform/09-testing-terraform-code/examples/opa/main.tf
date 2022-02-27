@@ -13,23 +13,19 @@ provider "aws" {
   region = "us-east-2"
 }
 
-module "alb" {
-  # TODO: replace ref with version number
-  source = "github.com/brikis98/terraform-up-and-running-code//code/terraform/07-testing-terraform-code/modules/networking/alb?ref=master"
+resource "aws_instance" "example" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro"
 
-  # source = "../../modules/networking/alb"
-
-  alb_name   = "example-alb"
-  subnet_ids = data.aws_subnets.default.ids
+  tags = var.tags
 }
 
-data "aws_vpc" "default" {
-  default = true
-}
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"] # Canonical
 
-data "aws_subnets" "default" {
   filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
   }
 }

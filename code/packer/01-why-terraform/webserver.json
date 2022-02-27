@@ -1,6 +1,6 @@
 {
   "builders": [{
-    "ami_name": "packer-example",
+    "ami_name": "packer-example-{{isotime | clean_resource_name}}",
     "instance_type": "t2.micro",
     "region": "us-east-2",
     "type": "amazon-ebs",
@@ -16,6 +16,7 @@
     ],
     "environment_vars": [
       "DEBIAN_FRONTEND=noninteractive"
-    ]
+    ],
+    "pause_before": "60s"
   }]
 }

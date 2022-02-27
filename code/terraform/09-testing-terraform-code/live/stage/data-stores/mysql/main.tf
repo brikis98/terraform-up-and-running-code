@@ -22,7 +22,6 @@ terraform {
   }
 }
 
-# TODO: where is this tag used? If not used anywhere, remove the tag to avoid confusion in the future.
 provider "aws" {
   region = "us-east-2"
 }

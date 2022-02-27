@@ -17,11 +17,9 @@ variable "instance_type" {
   description = "The type of EC2 Instances to run (e.g. t2.micro)"
   type        = string
 
-  # An example of how to enforce business constraints using a validation block.
-  # Here, we limit the instance type to those in the AWS Free Tier.
   validation {
     condition     = contains(["t2.micro", "t3.micro"], var.instance_type)
-    error_message = "This module only allows free tier instance types: t2.micro | t3.micro."
+    error_message = "Only free tier is allowed: t2.micro | t3.micro."
   }
 }
 
@@ -29,11 +27,9 @@ variable "min_size" {
   description = "The minimum number of EC2 Instances in the ASG"
   type        = number
 
-  # An example of how to enforce business constraints using a validation block.
-  # Here, we ensure ASGs are never empty, but also never have more than 10 instances.
   validation {
     condition     = var.min_size > 0 && var.min_size <= 10
-    error_message = "This module only allows ASGs of size between 1 and 10 (inclusive)."
+    error_message = "ASGs must be of size 1-10 (inclusive)."
   }
 }
 
@@ -41,11 +37,9 @@ variable "max_size" {
   description = "The maximum number of EC2 Instances in the ASG"
   type        = number
 
-  # An example of how to enforce business constraints using a validation block.
-  # Here, we ensure ASGs are never empty, but also never have more than 10 instances.
   validation {
     condition     = var.max_size > 0 && var.max_size <= 10
-    error_message = "This module only allows ASGs of size between 1 and 10 (inclusive)."
+    error_message = "ASGs must be of size 1-10 (inclusive)."
   }
 }
 

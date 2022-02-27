@@ -1,13 +1,14 @@
 # OPA example
 
 This folder contains example [Open Policy Agent (OPA)](https://www.openpolicyagent.org/) policy that enforces all 
-module source URLs come from the `brikis98` GitHub org.
+resources include a specific tag.
 
 For more info, please see Chapter 9, "How to test Terraform code", of
 *[Terraform: Up and Running](http://www.terraformupandrunning.com)*.
 
 ## Quick start
 
-The best way to run this test is with Terratest. See 
-[opa_test.go](../../terraform/09-testing-terraform-code/test/opa_test.go).
+Please see the README in the companion Terraform module at 
+[09-testing-terraform-code/examples/opa](../../terraform/09-testing-terraform-code/examples/opa) for instructions on 
+how to use this policy to test that module.
 

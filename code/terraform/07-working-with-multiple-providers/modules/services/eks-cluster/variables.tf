@@ -4,7 +4,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 variable "name" {
-  description = "The name to use for the EKS cluster and all resources in this module"
+  description = "The name to use for the EKS cluster"
   type        = string
 }
 
@@ -24,6 +24,6 @@ variable "desired_size" {
 }
 
 variable "instance_types" {
-  description = "The types of EC2 instances to run in the node group (e.g., t2.micro)."
+  description = "The types of EC2 instances to run in the node group"
   type        = list(string)
 }

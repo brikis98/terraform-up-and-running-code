@@ -1,6 +1,6 @@
-output "neo_arn" {
+output "first_arn" {
   value       = aws_iam_user.example[0].arn
-  description = "The ARN for user Neo"
+  description = "The ARN for the first user"
 }
 
 output "all_arns" {

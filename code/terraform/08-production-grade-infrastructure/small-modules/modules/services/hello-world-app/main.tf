@@ -17,6 +17,7 @@ module "asg" {
   cluster_name  = "hello-world-${var.environment}"
   ami           = var.ami
   instance_type = var.instance_type
+
   user_data     = templatefile("${path.module}/user-data.sh", {
     server_port = var.server_port
     db_address  = data.terraform_remote_state.db.outputs.address

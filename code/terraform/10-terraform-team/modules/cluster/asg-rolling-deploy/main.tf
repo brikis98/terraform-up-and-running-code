@@ -16,7 +16,6 @@ resource "aws_launch_configuration" "example" {
   user_data       = var.user_data
 
   # Required when using a launch configuration with an auto scaling group.
-  # https://www.terraform.io/docs/providers/aws/r/launch_configuration.html
   lifecycle {
     create_before_destroy = true
   }
