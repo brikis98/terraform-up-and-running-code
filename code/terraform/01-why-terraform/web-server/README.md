@@ -11,7 +11,7 @@ For more info, please see Chapter 1, "Why Terraform", of
 * You must have [Terraform](https://www.terraform.io/) installed on your computer. 
 * You must have an [Amazon Web Services (AWS) account](http://aws.amazon.com/).
 
-Please note that this code was written for Terraform 0.12.x.
+Please note that this code was written for Terraform 1.x.
 
 ## Quick start
 

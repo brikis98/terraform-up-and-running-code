@@ -5,7 +5,7 @@ This folder contains an example [Terraform](https://www.terraform.io/) configura
 (using [ELB](https://aws.amazon.com/elasticloadbalancing/)) in an [Amazon Web Services (AWS) 
 account](http://aws.amazon.com/). The load balancer listens on port 80 and returns the text "Hello, World" for the 
 `/` URL. The Auto Scaling Group will do a zero-downtime deployment whenever you change any parameters in this
-module. The code for the cluster and load balancer are defined as a Terraform module in
+module by using `create_before_destroy`. The code for the cluster and load balancer are defined as a Terraform module in
 [modules/services/webserver-cluster](../../../../modules/services/webserver-cluster).
 
 For more info, please see Chapter 5, "Terraform Tips & Tricks: Loops, If-Statements, Deployment, and Gotchas", of 
@@ -18,7 +18,7 @@ For more info, please see Chapter 5, "Terraform Tips & Tricks: Loops, If-Stateme
 * You must deploy the MySQL database in [data-stores/mysql](../../data-stores/mysql) BEFORE deploying the
   configuration in this folder.
 
-Please note that this code was written for Terraform 0.12.x.
+Please note that this code was written for Terraform 1.x.
 
 ## Quick start
 

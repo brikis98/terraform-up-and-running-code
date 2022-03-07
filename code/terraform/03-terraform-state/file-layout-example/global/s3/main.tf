@@ -1,12 +1,16 @@
 terraform {
-  required_version = ">= 0.12, < 0.13"
+  required_version = ">= 1.0.0, < 2.0.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
 }
 
 provider "aws" {
   region = "us-east-2"
-
-  # Allow any 2.x version of the AWS provider
-  version = "~> 2.0"
 }
 
 resource "aws_s3_bucket" "terraform_state" {
@@ -17,20 +21,35 @@ resource "aws_s3_bucket" "terraform_state" {
   // usage
   force_destroy = true
 
-  # Enable versioning so we can see the full revision history of our
-  # state files
-  versioning {
-    enabled = true
-  }
+}
 
-  # Enable server-side encryption by default
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
+# Enable versioning so you can see the full revision history of your
+# state files
+resource "aws_s3_bucket_versioning" "enabled" {
+  bucket = aws_s3_bucket.terraform_state.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+# Enable server-side encryption by default
+resource "aws_s3_bucket_server_side_encryption_configuration" "default" {
+  bucket = aws_s3_bucket.terraform_state.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
   }
+}
+
+# Explicitly block all public access to the S3 bucket
+resource "aws_s3_bucket_public_access_block" "public_access" {
+  bucket                  = aws_s3_bucket.terraform_state.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 resource "aws_dynamodb_table" "terraform_locks" {

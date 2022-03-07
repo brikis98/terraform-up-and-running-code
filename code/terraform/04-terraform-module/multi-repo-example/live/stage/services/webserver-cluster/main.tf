@@ -1,19 +1,23 @@
 terraform {
-  required_version = ">= 0.12, < 0.13"
+  required_version = ">= 1.0.0, < 2.0.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
 }
 
 provider "aws" {
   region = "us-east-2"
-
-  # Allow any 2.x version of the AWS provider
-  version = "~> 2.0"
 }
 
 module "webserver_cluster" {
 
   # Since the terraform-up-and-running-code repo is open source, we're using an HTTPS URL here. If it was a private
   # repo, we'd instead use an SSH URL (git@github.com:brikis98/terraform-up-and-running-code.git) to leverage SSH auth
-  source = "github.com/brikis98/terraform-up-and-running-code//code/terraform/04-terraform-module/module-example/modules/services/webserver-cluster?ref=v0.1.0"
+  source = "github.com/brikis98/terraform-up-and-running-code//code/terraform/04-terraform-module/module-example/modules/services/webserver-cluster?ref=v0.2.0"
 
   cluster_name           = var.cluster_name
   db_remote_state_bucket = var.db_remote_state_bucket

@@ -1,5 +1,12 @@
 terraform {
-  required_version = ">= 0.12, < 0.13"
+  required_version = ">= 1.0.0, < 2.0.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
 }
 
 resource "aws_launch_configuration" "example" {
@@ -7,23 +14,16 @@ resource "aws_launch_configuration" "example" {
   instance_type   = var.instance_type
   security_groups = [aws_security_group.instance.id]
 
-  user_data = data.template_file.user_data.rendered
-
-  # Required when using a launch configuration with an auto scaling group.
-  # https://www.terraform.io/docs/providers/aws/r/launch_configuration.html
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-data "template_file" "user_data" {
-  template = file("${path.module}/user-data.sh")
-
-  vars = {
+  user_data       = templatefile("${path.module}/user-data.sh", {
     server_port = var.server_port
     db_address  = data.terraform_remote_state.db.outputs.address
     db_port     = data.terraform_remote_state.db.outputs.port
     server_text = var.server_text
+  })
+
+  # Required when using a launch configuration with an auto scaling group.
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
@@ -33,7 +33,7 @@ resource "aws_autoscaling_group" "example" {
   name = "${var.cluster_name}-${aws_launch_configuration.example.name}"
 
   launch_configuration = aws_launch_configuration.example.name
-  vpc_zone_identifier  = data.aws_subnet_ids.default.ids
+  vpc_zone_identifier  = data.aws_subnets.default.ids
   target_group_arns    = [aws_lb_target_group.asg.arn]
   health_check_type    = "ELB"
 
@@ -111,14 +111,17 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnet_ids" "default" {
-  vpc_id = data.aws_vpc.default.id
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
 }
 
 resource "aws_lb" "example" {
   name               = var.cluster_name
   load_balancer_type = "application"
-  subnets            = data.aws_subnet_ids.default.ids
+  subnets            = data.aws_subnets.default.ids
   security_groups    = [aws_security_group.alb.id]
 }
 

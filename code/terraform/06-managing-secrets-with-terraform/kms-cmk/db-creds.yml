@@ -1,0 +1,5 @@
+# This file is used as an example of a plain text input to encryption. Since this is in plain text, it should
+# normally NOT be checked into version control; we're only doing it here as this file is necessary for demonstration
+# and testing purposes.
+username: admin
+password: password

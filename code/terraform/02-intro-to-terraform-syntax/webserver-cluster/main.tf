@@ -1,16 +1,20 @@
 terraform {
-  required_version = ">= 0.12, < 0.13"
+  required_version = ">= 1.0.0, < 2.0.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
 }
 
 provider "aws" {
   region = "us-east-2"
-
-  # Allow any 2.x version of the AWS provider
-  version = "~> 2.0"
 }
 
 resource "aws_launch_configuration" "example" {
-  image_id        = "ami-0c55b159cbfafe1f0"
+  image_id        = "ami-0fb653ca2d3203ac1"
   instance_type   = "t2.micro"
   security_groups = [aws_security_group.instance.id]
 
@@ -21,7 +25,6 @@ resource "aws_launch_configuration" "example" {
               EOF
 
   # Required when using a launch configuration with an auto scaling group.
-  # https://www.terraform.io/docs/providers/aws/r/launch_configuration.html
   lifecycle {
     create_before_destroy = true
   }
@@ -29,7 +32,7 @@ resource "aws_launch_configuration" "example" {
 
 resource "aws_autoscaling_group" "example" {
   launch_configuration = aws_launch_configuration.example.name
-  vpc_zone_identifier  = data.aws_subnet_ids.default.ids
+  vpc_zone_identifier  = data.aws_subnets.default.ids
 
   target_group_arns = [aws_lb_target_group.asg.arn]
   health_check_type = "ELB"
@@ -59,8 +62,11 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnet_ids" "default" {
-  vpc_id = data.aws_vpc.default.id
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
 }
 
 resource "aws_lb" "example" {
@@ -68,7 +74,7 @@ resource "aws_lb" "example" {
   name               = var.alb_name
 
   load_balancer_type = "application"
-  subnets            = data.aws_subnet_ids.default.ids
+  subnets            = data.aws_subnets.default.ids
   security_groups    = [aws_security_group.alb.id]
 }
 

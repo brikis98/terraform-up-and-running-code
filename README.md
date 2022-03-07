@@ -1,35 +1,35 @@
 # Terraform: Up & Running Code
 
-This repo contains the code samples for the book *[Terraform: Up and Running](http://www.terraformupandrunning.com)*,
-2nd edition, by [Yevgeniy Brikman](http://www.ybrikman.com).
+This repo contains the code samples for the book *[Terraform: Up and Running](http://www.terraformupandrunning.com)*, 
+by [Yevgeniy Brikman](http://www.ybrikman.com).
 
+
+
+
+## Looking for the 1st, 2nd, or 3rd edition?
+
+*Terraform: Up & Running* is now on its **3rd edition**; all the code in `master` is for this edition. If you're looking
+for code examples for other editions, please see the following branches:
+
+* [1st-edition branch](https://github.com/brikis98/terraform-up-and-running-code/tree/1st-edition).
+* [2nd-edition branch](https://github.com/brikis98/terraform-up-and-running-code/tree/2nd-edition).
+* [3rd-edition branch](https://github.com/brikis98/terraform-up-and-running-code/tree/3rd-edition).
 
 
 
 ## Quick start
 
-All the code is in the [code](/code) folder. It is organized by language (terraform, bash, ruby, etc) and within each
-language, by chapter. Since this code comes from a book about Terraform, the vast majority of the code consists of
-Terraform examples in the [code/terraform folder](/code/terraform). 
+All the code is in the [code](/code) folder. The code examples are organized first by the tool or language and then
+by chapter. For example, if you're looking at an example of Terraform code in Chapter 2, you'll find it in the 
+[code/terraform/02-intro-to-terraform-syntax](code/terraform/02-intro-to-terraform-syntax) folder; if you're looking at 
+an OPA (Rego) example in Chapter 9, you'll find it in the 
+[code/terraform/09-testing-terraform-code](code/terraform/09-testing-terraform-code) folder.
 
-For instructions on running the code, please consult the README in each folder, and, of course, the 
-*[Terraform: Up and Running](http://www.terraformupandrunning.com)* book. 
+Since this code comes from a book about Terraform, the vast majority of the code consists of Terraform examples in the 
+[code/terraform folder](/code/terraform).
 
-
-
-## More examples
-
-The example code in *Terraform: Up and Running* are mostly for Amazon Web Services (AWS). There is a project underway
-to translate these examples to their equivalents on other cloud providers, such as Google Cloud and Azure, here:
-https://github.com/mjuenema/Terraform-Up-and-Running-Code-Samples-Translated/. 
-
-
-
-## Looking for the 1st edition?
-
-All the code examples in the `master` branch are for the 2nd edition of *Terraform: Up & Running*. If you're looking
-for the code examples from the 1st edition, please head over to the 
-[1st-edition branch](https://github.com/brikis98/terraform-up-and-running-code/tree/1st-edition).
+For instructions on running the code, please consult the README in each folder, and, of course, the
+*[Terraform: Up and Running](http://www.terraformupandrunning.com)* book.
 
 
 
