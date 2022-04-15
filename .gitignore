@@ -2,3 +2,4 @@
 *.tfstate.backup
 .terraform
 *.iml
+.idea/
