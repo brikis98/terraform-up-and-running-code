@@ -10,6 +10,9 @@
 ### Depends On
 * You need an Amazon account
 
+### Qwiklabs alternative 
+* Trainer shows a load balancer lab on Google (qwiklabs) or on Amazon (amazon.qwiklabs)
+
 ### Run time
 45 minutes
 
