@@ -12,4 +12,8 @@ output "EC2_type" {
 output "Message" {
     value = local.message
 }
- 
+
+output "Port" {
+    description = "Experiment with a number variable"
+    value = var.port
+}

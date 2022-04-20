@@ -11,3 +11,10 @@ variable inst_type {
     type = string
 }
 
+variable port {
+    description = "port number"
+    type = number
+    default = 8080
+}
+
+

@@ -14,7 +14,7 @@
 * Trainer shows a load balancer lab on Google (qwiklabs) or on Amazon (amazon.qwiklabs)
 
 ### Run time
-45 minutes
+* 45 minutes
 
 ## Step 1: Login into your Amazon account
 
