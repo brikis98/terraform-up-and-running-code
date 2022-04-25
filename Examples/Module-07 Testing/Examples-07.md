@@ -19,7 +19,7 @@ In this case, the error is obvious and would be found with even a cursory inspec
 2. Look in terraform.tfvars file to show the expected bucket name
 3. The code runs without any errors or warnings, but fails to produce the right bucket
 
-The takwaway is that in a more complicated deployment, this sort of error may not be noticed until things start failing, and then we have to start what might be a massive bug hunt.
+The takeaway is that in a more complicated deployment, this sort of error may not be noticed until things start failing, and then we have to start what might be a massive bug hunt.
 
 ### Step two
 
