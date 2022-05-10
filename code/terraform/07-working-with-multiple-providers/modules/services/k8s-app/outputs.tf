@@ -3,7 +3,7 @@ output "service_status" {
   description = "The K8S Service status"
 }
 
-local {
+locals {
   status = kubernetes_service.app.status
 }
 
