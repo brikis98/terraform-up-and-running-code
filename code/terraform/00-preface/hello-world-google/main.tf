@@ -7,8 +7,10 @@ terraform {
   }
 }
 
+# You have to adjust the path to your credentials
+
 provider "google" {
-  credentials = file("/home/mark/Desktop/hadoop-setup-245603-aa769a1a93b3.json")
+  credentials = file("/home/mark/mark.json")
 
   project = "hadoop-setup-245603"
   region  = "us-central1"
