@@ -1,1 +1,1 @@
- inst_type = "t2.nano"
+inst_type = "t2.nano"
