@@ -7,10 +7,11 @@ terraform {
   }
 }
 
-# You have to adjust the path to your credentials
+# If you run in Google Cloud, in the shell, then you do not need the credentials.
+# Otherwise, set them up as the README tells you.
 
 provider "google" {
-  credentials = file("/home/mark/mark.json")
+  // credentials = file("/home/mark/mark.json")
 
   project = "hadoop-setup-245603"
   region  = "us-central1"
