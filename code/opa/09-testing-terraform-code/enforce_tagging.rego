@@ -1,4 +1,4 @@
-package tuar
+package terraform
 
 allow {
    resource_change := input.resource_changes[_]
