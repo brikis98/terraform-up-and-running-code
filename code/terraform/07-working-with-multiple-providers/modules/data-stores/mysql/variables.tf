@@ -4,20 +4,20 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 variable "db_name" {
-  description = "Name for the DB. Required unless replicate_source_db is set."
+  description = "Name for the DB."
   type        = string
   default     = null
 }
 
 variable "db_username" {
-  description = "Username for the DB. Required unless replicate_source_db is set."
+  description = "Username for the DB."
   type        = string
   sensitive   = true
   default     = null
 }
 
 variable "db_password" {
-  description = "Password for the DB. Required unless replicate_source_db is set."
+  description = "Password for the DB."
   type        = string
   sensitive   = true
   default     = null

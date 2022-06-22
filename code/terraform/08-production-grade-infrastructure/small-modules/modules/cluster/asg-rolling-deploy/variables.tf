@@ -28,8 +28,13 @@ variable "min_size" {
   type        = number
 
   validation {
-    condition     = var.min_size > 0 && var.min_size <= 10
-    error_message = "ASGs must be of size 1-10 (inclusive)."
+    condition     = var.min_size > 0
+    error_message = "ASGs can't be empty or we'll have an outage!"
+  }
+
+  validation {
+    condition     = var.min_size <= 10
+    error_message = "ASGs must have 10 or fewer instances to keep costs down."
   }
 }
 
@@ -38,8 +43,13 @@ variable "max_size" {
   type        = number
 
   validation {
-    condition     = var.max_size > 0 && var.max_size <= 10
-    error_message = "ASGs must be of size 1-10 (inclusive)."
+    condition     = var.max_size > 0
+    error_message = "ASGs can't be empty or we'll have an outage!"
+  }
+
+  validation {
+    condition     = var.max_size <= 10
+    error_message = "ASGs must have 10 or fewer instances to keep costs down."
   }
 }
 
