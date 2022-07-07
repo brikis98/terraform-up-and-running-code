@@ -9,12 +9,12 @@ resource "aws_instance" "Ohio" {
     }
 }
 
-resource "aws_instance" "Virginia" {
-    provider = aws.Virginia
-    ami = "ami-09e67e426f25ce0d7"
+resource "aws_instance" "California" {
+    provider = aws.California
+    ami = "ami-0d9858aa3c6322f73"
     instance_type = "t2.micro"
     tags = {
-        Name = "us-east-1"
+        Name = "us-west-1"
     }
 }
 

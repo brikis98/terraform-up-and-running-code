@@ -16,8 +16,8 @@ provider aws {
 }
 
 provider aws {
-    region = "us-east-1"
-    alias = "Virginia"
+    region = "us-west-1"
+    alias = "California"
     profile = "dev"
 }
 
