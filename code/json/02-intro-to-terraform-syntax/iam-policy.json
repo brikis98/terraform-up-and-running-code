@@ -75,6 +75,11 @@
       "Effect": "Allow",
       "Action": "account:*",
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "eks:*",
+      "Resource": "*"
     }
   ]
 }
