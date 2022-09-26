@@ -57,7 +57,7 @@ resource "aws_eks_node_group" "nodes" {
   node_group_name = var.name
   node_role_arn   = aws_iam_role.node_group.arn
   subnet_ids      = data.aws_subnets.default.ids
-  instance_types = var.instance_types
+  instance_types  = var.instance_types
 
   scaling_config {
     min_size     = var.min_size
@@ -109,7 +109,7 @@ resource "aws_iam_role_policy_attachment" "AmazonEKS_CNI_Policy" {
   role       = aws_iam_role.node_group.name
 }
 
-# Since this code is only for testing and learning, use the Default VPC and subnets.
+# Since this code is only for learning, use the Default VPC and subnets.
 # For real-world use cases, you should use a custom VPC and private subnets.
 
 data "aws_vpc" "default" {
