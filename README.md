@@ -26,7 +26,7 @@ an OPA (Rego) example in Chapter 9, you'll find it in the
 [code/opa/09-testing-terraform-code](code/opa/09-testing-terraform-code) folder.
 
 Since this code comes from a book about Terraform, the vast majority of the code consists of Terraform examples in the 
-[code/terraform folder](/code/terraform).
+[code/terraform](/code/terraform) folder.
 
 For instructions on running the code, please consult the README in each folder, and, of course, the
 *[Terraform: Up and Running](http://www.terraformupandrunning.com)* book.
