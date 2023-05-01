@@ -35,10 +35,10 @@
 
 ## Create Scripts
 
-* Create three scripts: one for authentication, one to create a compartment, and one to print outputs.
+* Create three scripts: one for authentication, one to fetch data from your account, and one to print outputs.
 
-    - compartment.tf
-    - output.tf
+    - availability-domains.tf
+    - output.tf+
     - provider.tf
 
 ## Run Script

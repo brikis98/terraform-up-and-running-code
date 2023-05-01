@@ -11,6 +11,14 @@ terraform {
 
 provider "aws" {
   region = "us-east-2"
+
+  # Tags to apply to all AWS resources by default
+  default_tags {
+    tags = {
+      Owner     = "team-foo"
+      ManagedBy = "Terraform"
+    }
+  }
 }
 
 module "webserver_cluster" {
