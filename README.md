@@ -23,10 +23,10 @@ All the code is in the [code](/code) folder. The code examples are organized fir
 by chapter. For example, if you're looking at an example of Terraform code in Chapter 2, you'll find it in the 
 [code/terraform/02-intro-to-terraform-syntax](code/terraform/02-intro-to-terraform-syntax) folder; if you're looking at 
 an OPA (Rego) example in Chapter 9, you'll find it in the 
-[code/terraform/09-testing-terraform-code](code/terraform/09-testing-terraform-code) folder.
+[code/opa/09-testing-terraform-code](code/opa/09-testing-terraform-code) folder.
 
 Since this code comes from a book about Terraform, the vast majority of the code consists of Terraform examples in the 
-[code/terraform folder](/code/terraform).
+[code/terraform](/code/terraform) folder.
 
 For instructions on running the code, please consult the README in each folder, and, of course, the
 *[Terraform: Up and Running](http://www.terraformupandrunning.com)* book.

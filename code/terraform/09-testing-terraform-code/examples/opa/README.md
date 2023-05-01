@@ -34,13 +34,13 @@ export AWS_SECRET_ACCESS_KEY=(your secret access key)
 Run `terraform plan` and save the output to a file:
 
 ```
-terraform plan -out tuar.plan
+terraform plan -out tfplan.binary
 ```
 
 Convert the plan file to JSON:
 
 ```
-terraform show -json tuar.plan > tuar.json
+terraform show -json tfplan.binary > tfplan.json
 ```
 
 Run the JSON plan file against the [enforce_tagging.rego](../../../../opa/09-testing-terraform-code/enforce_tagging.rego)
@@ -49,9 +49,9 @@ OPA policy:
 ```
 opa eval \
   --data enforce_tagging.rego \
-  --input tuar.json \
+  --input tfplan.json \
   --format pretty \
-  data.tuar.allow
+  data.terraform.allow
 ```
 
 If the module set the required `ManagedBy` tag, the output will be:

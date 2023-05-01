@@ -29,11 +29,14 @@ variable "min_size" {
   description = "The minimum number of EC2 Instances in the ASG"
   type        = number
 
-  # An example of how to enforce business constraints using a validation block.
-  # Here, we ensure ASGs are never empty, but also never have more than 10 instances.
   validation {
-    condition     = var.min_size > 0 && var.min_size <= 10
-    error_message = "This module only allows ASGs of size between 1 and 10 (inclusive)."
+    condition     = var.min_size > 0
+    error_message = "ASGs can't be empty or we'll have an outage!"
+  }
+
+  validation {
+    condition     = var.min_size <= 10
+    error_message = "ASGs must have 10 or fewer instances to keep costs down."
   }
 }
 
@@ -41,11 +44,14 @@ variable "max_size" {
   description = "The maximum number of EC2 Instances in the ASG"
   type        = number
 
-  # An example of how to enforce business constraints using a validation block.
-  # Here, we ensure ASGs are never empty, but also never have more than 10 instances.
   validation {
-    condition     = var.max_size > 0 && var.max_size <= 10
-    error_message = "This module only allows ASGs of size between 1 and 10 (inclusive)."
+    condition     = var.max_size > 0
+    error_message = "ASGs can't be empty or we'll have an outage!"
+  }
+
+  validation {
+    condition     = var.max_size <= 10
+    error_message = "ASGs must have 10 or fewer instances to keep costs down."
   }
 }
 

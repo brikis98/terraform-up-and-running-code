@@ -7,7 +7,7 @@ include {
 }
 
 inputs = {
-  db_name     = "example_stage"
+  db_name = "example_stage"
 
   # Set the username using the TF_VAR_db_username environment variable
   # Set the password using the TF_VAR_db_password environment variable
