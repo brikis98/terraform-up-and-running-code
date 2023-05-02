@@ -3,29 +3,7 @@
 ## Prepare
 
 * Create SSH Encryption Keys
-    - Create ssh encryption keys to connect to your compute instance.
-
-        - Open a terminal window:
-        
-            - MacOS or Linux: Open a terminal window in the directory where you want to store your keys.
-
-            - Windows: Right-click on the directory where you want to store your keys and select Git Bash Here.
-
-        - Issue the following OpenSSH command:
-            ```
-            ssh-keygen -t rsa -N "" -b 2048 -C <your-ssh-key-name> -f <your-ssh-key-name>
-            ```
-        
-            - The command generates some random text art used to generate the keys. When complete, you have two files:
-
-                - The private key file: <your-ssh-key-name>
-
-                - The public key file: <your-ssh-key-name>.pub
-
-            - You use these files to connect to your compute instance.
-
-        - You have generated the required encryption keys.
-
+    
     - Create a Virtual Cloud Network (VCN)
 
         - Set up a VCN to connect your Linux instance to the internet. You configure all the components needed to create your virtual network.
@@ -116,20 +94,6 @@
                 - Shape: VM.Standard2.1
 
                     - To choose a different shape, go to VM Standard Shapes.
-
-            - Collect the following information from your environment.
-
-                - SSH Authorized Key (public key path): (ssh-public-key-path)
-
-                    - From section 1, get the path to the SSH public key on your environment.
-
-                    - You use this path when you set up the compute instance.
-
-                - Private SSH Key Path: (ssh-private-key-path)
-
-                - From the Create SSH Encryption Keys section, get the path to the SSH private key.
-
-                - You use this private key to connect to your compute instance. 
 
     - Add Resource Policy
 
