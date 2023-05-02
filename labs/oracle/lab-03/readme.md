@@ -191,3 +191,11 @@ terraform plan
 ```
 terraform apply
 ```
+
+## Watch the instance creation from the Console.
+
+* Open the navigation menu and click Compute. Under Compute, click Instances.
+
+* Select your compartment.
+
+* Watch your instance appear in the list of instances.
