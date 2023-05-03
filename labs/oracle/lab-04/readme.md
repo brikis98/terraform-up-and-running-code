@@ -4,13 +4,9 @@
 
 * Create below scripts
 
-    - datasources.tf
     - storage.tf
     - output.tf
-    - provider.tf
-    - variables.tf
-    - terraform.tfvars
-
+    
 ## Run Scripts
 
 ```
