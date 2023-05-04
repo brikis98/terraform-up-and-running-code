@@ -38,8 +38,8 @@ resource "oci_core_instance" "Y" {
     preserve_boot_volume = false
 }
 
-output "name-of-first-availability-domain" {
-  value = data.oci_identity_availability_domains.ads.availability_domains[0].name
+data "oci_identity_availability_domains" "ads" {
+  compartment_id = "ocid1.tenancy.oc1..aaaaaaaa6ag77lnluy7avrzhjkg7g3kriz5t5u2jnsw43yecx4oylzxsv5uq"
 }
 
 
