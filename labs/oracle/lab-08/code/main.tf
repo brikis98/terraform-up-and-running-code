@@ -24,3 +24,7 @@ resource "oci_core_instance" "myVM" {
      
     preserve_boot_volume = false 
 }
+
+data "oci_identity_availability_domains" "ads" {
+  compartment_id = var.compartment_id
+}
