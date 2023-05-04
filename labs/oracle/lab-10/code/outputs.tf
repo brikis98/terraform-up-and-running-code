@@ -1,10 +1,4 @@
-
-output "OCI instances" {
+output "OCI_instances" {
     description = "The OCI instances"
-    value = data.aws_ami.r1.id
+    value = data.oci_core_instances.r1.id
 }
-
-
-
-
-
