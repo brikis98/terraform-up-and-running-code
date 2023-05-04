@@ -18,8 +18,8 @@ resource "oci_core_instance" "VM" {
     preserve_boot_volume = false
 }
 
-output "name-of-first-availability-domain" {
-  value = data.oci_identity_availability_domains.ads.availability_domains[0].name
+data "oci_identity_availability_domains" "ads" {
+  compartment_id = var.compartment_id
 }
 
 
