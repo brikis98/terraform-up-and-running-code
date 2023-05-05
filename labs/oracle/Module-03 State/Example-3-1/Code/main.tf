@@ -18,11 +18,16 @@ resource "oci_core_instance" "X" {
     preserve_boot_volume = false
 }
 
-resource "oci_core_instance" "Y" {
+resource "oci_core_flex_instance" "Y" {
+
+    source = "oracle-terraform-modules/compute-instance/oci"
+    instance_flex_memory_in_gbs = 1
+    instance_flex_ocpus         = 1
+
     # Required
     availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
     compartment_id = "ocid1.tenancy.oc1..aaaaaaaa6ag77lnluy7avrzhjkg7g3kriz5t5u2jnsw43yecx4oylzxsv5uq"
-    shape = "VM.Standard2.1"
+    shape = "VM.Standard3.Flex"
     source_details {
         source_id = "ocid1.image.oc1.uk-london-1.aaaaaaaa3lb354447utq7gq6v3hqvo7u3nrkbf5fxmdxfem5jq4ngy4rtxba"
         source_type = "image"

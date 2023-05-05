@@ -1,6 +1,6 @@
 terraform {
   backend "http" {
-    address = "https://objectstorage.uk-london-1.oraclecloud.com/https://objectstorage.uk-london-1.oraclecloud.com/p/QXH8R8I1Mr_4vsvP2_6ePSrRYqtAO-e1LEyzOEhhPW5TqcnCBqAgUG3onGnjk6UB/n/lrsivuswtz6j/b/himkum_bucket_500/o/"
+    address = "https://objectstorage.uk-london-1.oraclecloud.com/p/J1Z9AB_-KZ8nQOEOtYZfcT6NgoI7-NVO-Jejauuuvf5dshUv8kXfOflN1l8uf6dt/n/lrsivuswtz6j/b/himkum_bucket_500/o/terraform.tfstate"
     update_method = "PUT"
   }
 }
