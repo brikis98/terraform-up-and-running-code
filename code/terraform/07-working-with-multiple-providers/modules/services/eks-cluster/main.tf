@@ -13,7 +13,7 @@ terraform {
 resource "aws_eks_cluster" "cluster" {
   name     = var.name
   role_arn = aws_iam_role.cluster.arn
-  version  = "1.21"
+  version  = "1.23"
 
   vpc_config {
     subnet_ids = data.aws_subnets.default.ids
