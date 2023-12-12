@@ -7,6 +7,16 @@ terraform {
       version = "~> 4.0"
     }
   }
+
+  backend "s3" {
+    bucket         = "fbh-s3-bucket"
+    key            = "prod/services/webservice-cluster/terraform.tfstate"
+    region         = "us-east-2"
+
+    dynamodb_table = "fbh-dynamo-table"
+    encrypt        = true
+  }
+
 }
 
 provider "aws" {
@@ -40,8 +50,7 @@ resource "aws_autoscaling_schedule" "scale_in_at_night" {
   min_size              = 2
   max_size              = 10
   desired_capacity      = 2
-  recurrence            = "0 17 * * *"
+  recurrence            = "15 16 * * *"
 
   autoscaling_group_name = module.webserver_cluster.asg_name
 }
-

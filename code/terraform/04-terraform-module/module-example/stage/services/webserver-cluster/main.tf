@@ -7,6 +7,15 @@ terraform {
       version = "~> 4.0"
     }
   }
+
+  backend "s3" {
+    bucket         = "fbh-s3-bucket"
+    key            = "stage/services/webservice-cluster/terraform.tfstate"
+    region         = "us-east-2"
+
+    dynamodb_table = "fbh-dynamo-table"
+    encrypt        = true
+  }
 }
 
 provider "aws" {
