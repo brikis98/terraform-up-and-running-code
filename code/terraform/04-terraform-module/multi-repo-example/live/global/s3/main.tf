@@ -8,14 +8,14 @@ terraform {
     }
   }
 
-  backend "s3" {
-    bucket         = "fbh-s3-bucket"
-    key            = "global/s3/terraform.tfstate"
-    region         = "us-east-2"
+  # backend "s3" {
+  #   bucket         = "fbh-s3-bucket"
+  #   key            = "global/s3/terraform.tfstate"
+  #   region         = "us-east-2"
 
-    dynamodb_table = "fbh-dynamo-table"
-    encrypt        = true
-  }
+  #   dynamodb_table = "fbh-dynamo-table"
+  #   encrypt        = true
+  # }
 }
 
 provider "aws" {
