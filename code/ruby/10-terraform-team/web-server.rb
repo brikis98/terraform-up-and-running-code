@@ -22,7 +22,7 @@ class Handlers
   def handle(path)
     case path
     when "/"
-      [200, 'text/plain', 'Hello, World']
+      [200, 'text/UTF-8', 'Hello, World SMÖRGÅSBORD och RÄKOR']
     when "/api"
       [201, 'application/json', '{"foo":"bar"}']
     when "/web-service"

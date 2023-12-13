@@ -13,8 +13,8 @@ class TestWebServer < Test::Unit::TestCase
   def test_unit_hello
     status_code, content_type, body = @handlers.handle("/")
     assert_equal(200, status_code)
-    assert_equal('text/plain', content_type)
-    assert_equal('Hello, World', body)
+    assert_equal('text/UTF-8', content_type)
+    assert_equal('Hello, World SMÖRGÅSBORD och RÄKOR', body)
   end
 
   def test_unit_api
@@ -49,8 +49,8 @@ class TestWebServer < Test::Unit::TestCase
   def test_integration_hello
     do_integration_test('/', lambda { |response|
       assert_equal(200, response.code.to_i)
-      assert_equal('text/plain', response['Content-Type'])
-      assert_equal('Hello, World', response.body)
+      assert_equal('text/UTF-8', response['Content-Type'])
+      assert_equal('Hello, World SMÖRGÅSBORD och RÄKOR', String.new(response.body, encoding: 'UTF-8'))
     })
   end
 
